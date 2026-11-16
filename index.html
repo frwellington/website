@@ -1349,8 +1349,14 @@ body.zf-open{overflow:hidden}
 @media(max-width:560px){.zf{padding:0}.zf-card{height:100vh;height:100dvh;max-width:none;border-radius:0}}
 /* ===== Phone & tablet polish (desktop unchanged) ===== */
 @media(max-width:1180px){.menu{display:none}}
+/* Tablets (portrait and landscape) */
+@media(min-width:761px) and (max-width:1280px){
+.gala .ggrid{padding-left:60px;padding-right:60px}
+.formators{gap:22px}.fm b{font-size:min(1.45rem,2.05vw);white-space:normal;text-wrap:balance;overflow-wrap:anywhere}
+}
+@media(max-width:960px){#history .art3d{position:relative!important;top:auto!important;margin:0 auto 40px}}
 /* Phones & tablets: photo reels scroll natively (light on memory) */
-@media(max-width:1024px){
+@media(max-width:1024px),(hover:none) and (pointer:coarse){
 .ofilm,.grstage{-webkit-mask-image:none;mask-image:none;transform:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .ofilm::-webkit-scrollbar,.grstage::-webkit-scrollbar{display:none}
 .otrack.run,.grtrack.run{animation:none!important}
@@ -2550,6 +2556,7 @@ window.rmsAsset = k => {
   if (k === "gala") { tIdx = 0; buildTunnel(); }
   if (k === "reels") buildReels();
 };
+const TOUCHDEV = matchMedia("(hover:none) and (pointer:coarse)").matches;
 const J = { cur: 0, single: false, lens: true, zoom: 2.4, leaves: [], anim: 0, busyUntil: 0 };
 const jbook = $("#jbook");
 function jSize() {
@@ -2581,7 +2588,7 @@ function jSetBg(el, i) {
 function jLazy(center) {
   J.leaves.forEach((lf, k) => {
     const near = Math.abs(k - center) <= 3;
-    if (J.single || innerWidth <= 1024) lf.style.display = Math.abs(k - center) <= 4 ? "" : "none"; else lf.style.display = "";
+    if (J.single || innerWidth <= 1024 || TOUCHDEV) lf.style.display = Math.abs(k - center) <= 4 ? "" : "none"; else lf.style.display = "";
     if (J.single) jSetBg(lf.children[0], near ? k : -1);
     else { jSetBg(lf.children[0], near ? 2 * k : -1); jSetBg(lf.children[1], near ? 2 * k + 1 : -1); }
   });
@@ -3056,7 +3063,7 @@ function buildReels() {
 }
 /* Phones & tablets: move the reels by scrolling instead of one giant animated layer */
 function reelScroll(st, tr) {
-  if (innerWidth > 1024 || st._rs) return; st._rs = 1; let vis = false, hold = 0, x = 0, last = 0;
+  if ((innerWidth > 1024 && !TOUCHDEV) || st._rs) return; st._rs = 1; let vis = false, hold = 0, x = 0, last = 0;
   new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(st);
   const stop = () => { hold = Date.now() + 2500; }; ["touchstart", "pointerdown", "wheel"].forEach(v => st.addEventListener(v, stop, { passive: true }));
   st.addEventListener("scroll", () => { if (Date.now() < hold) x = st.scrollLeft; }, { passive: true });
