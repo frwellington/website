@@ -2875,7 +2875,7 @@ function evGrid(st, K) {
   const H = Math.max(...K.map(k => k.offsetHeight)); K.forEach(k => k.style.height = H + "px"); st.style.height = "";
 }
 function evLay() {
-  const st = $("#events"), K = $("#events .evk"), n = K.length; if (!n) return; const grid = C.evAuto === "no", ec = $("#evc"); if (ec) ec.classList.toggle("evgrid", grid); if (grid) K.forEach(k => { clearTimeout(k._t); k.style.transform = ""; k.style.opacity = ""; k.style.zIndex = ""; k.style.pointerEvents = ""; k.style.top = ""; k.classList.add("on"); k.classList.remove("evside"); }); const w = K[0].offsetWidth, mob = innerWidth < 760;
+  const st = $("#events"), K = $$("#events .evk"), n = K.length; if (!n) return; const grid = C.evAuto === "no", ec = $("#evc"); if (ec) ec.classList.toggle("evgrid", grid); if (grid) K.forEach(k => { clearTimeout(k._t); k.style.transform = ""; k.style.opacity = ""; k.style.zIndex = ""; k.style.pointerEvents = ""; k.style.top = ""; k.classList.add("on"); k.classList.remove("evside"); }); const w = K[0].offsetWidth, mob = innerWidth < 760;
   K.forEach(k => { const h = k.querySelector("h3"); h.style.fontSize = ""; const room = k.clientWidth - parseFloat(getComputedStyle(k).paddingLeft) - parseFloat(getComputedStyle(k).paddingRight); if (h.scrollWidth > room) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * room / h.scrollWidth * .98).toFixed(2) + "px"; });
   if (grid) return evGrid(st, K);
   K.forEach(k => k.style.height = ""); const H = Math.max(...K.map(k => k.offsetHeight)); K.forEach(k => { k.style.height = H + "px"; k.style.top = "20px"; }); st.style.height = H + 60 + "px";
