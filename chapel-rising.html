@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>(function(){try{if(location.protocol==="file:")return;window.__realURL=location.href;history.replaceState(history.state,"",location.pathname.replace(/[^\/]*$/,""));}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADP0lEQVR42k3L32tbVQDA8e8599wfuUlu0pg2i3SFrNM5meDbVOYmdkIVwTHXh4EK/gPK9iD+FXsVQRQEQQtKcSKCoMgEfXVC96AOzOzapk3SJL0/cu+55/gk+Hn/CIBbIG+CeQfcS2HjtucH55M0NsoPZFmWSLCu5wujiwfxdLj2Bhz8d5z/54uVxmb7ROfVJM+D1VfWK09evx7M/u4HQbNZyY6Pg0at1tHann9mofH5jTjWDZDqJphPWq1KlJVfRsp9eZKmej6ZqHG/b516hL/U5uiPPyniWNheT7esvah3dr7A2isIgfhKdRvWjbdCeCGpVHSte0IVSYryfZLBAGstlXabdLBP+9w54oND7R8dqcFg8NkuxVvOVV9832o9cmkmhJZSKoRAOg7h0hJuNaTM5oSLi8T7+2TDIa0zj8vqE2d0aM3TMtdnxWYYpdLi1U71RHpwKDAGaw0mL5CehzUGnWU4rospCqwxdJ971p7duGZ/eu/9udgMo6GDaGlrLdYK5fuoIOB4f4+VtRdRfsBf335Dtd3BFAVFktDo9Ww+PBTzeXGgpONItxKiHAedZUjPxYsi/CQhn86YlxMEDk7gY4oCISUqrBA9+hSD7XtSlVojPQ/ViJDTGSbPiXd38RoNhBAUWYLjumSjMQBCSor4mNHePvlkglRexQYLTebDEfl0StBug5RYY7DGkk9mqCAAKQGQSpGNjmiunkKFoZEy8DwZBMYYgwwCkIJqp4POMhACqzUIAWUJUmLKEp2mhN2uEVKGcj4aPeiunpZRr2ccpciPJngLTYrZjMn9+2TTKeFiGxWGmCxDVSq49XoZ/3ZX6iT51XnNFLcn/Z21VrPZ1a7SvfV1+c8PP2KtpcwyhBCowMdxPfyFJiYvilqeu6PxaMtJZxvyTeiPp8OXHt79fXv59GMq7HZKN6oTrazYardrly9csLoobLy3Z/M4KevGuONsvtlPZ69fhcS5A84VOL5siq304d768OdfOpc//ojxvW3h12rCcV1hsrmonzwp5MGBnOXzDzay2dvfAQ2QAuAOOM9D+SHu8lK9/rWqVnvzOLZCuUJnKQhMc6ElZ6Pxp9fSybu3QN4AK8D+C7JzleZ5cI11AAAAAElFTkSuQmCC">
@@ -1834,7 +1835,7 @@ body.zf-open .fab,body.sk-open .fab{display:none}
 
   /* ---------- 2. Language buttons (shared with the main website) ---------- */
   $$(".langs button").forEach(function(b){ b.classList.toggle("on",b.getAttribute("data-l")===LANG);
-    b.addEventListener("click",function(){ try{localStorage.setItem("rms_lang",b.getAttribute("data-l"));}catch(e){} location.reload(); }); });
+    b.addEventListener("click",function(){ try{localStorage.setItem("rms_lang",b.getAttribute("data-l"));}catch(e){} (window.__realURL?location.replace(window.__realURL):location.reload()); }); });
   var home=$("#homeLink"); if(home) home.textContent=U.home;
 
   /* the top menu never breaks into two lines: when it does not fit, its links stay in the side menu */

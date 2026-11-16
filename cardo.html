@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>(function(){try{if(location.protocol==="file:")return;window.__realURL=location.href;history.replaceState(history.state,"",location.pathname.replace(/[^\/]*$/,""));}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
@@ -918,7 +919,7 @@ const V = {
       if (r.ok) { RMS_DEFAULT._ts = o._ts; C._ts = o._ts; LS.set(STORE, C); log("Published both websites"); $("#pubSt").textContent = "Published. Both websites show it in about a minute."; toast("Published"); }
       else $("#pubSt").textContent = svcErr(r.error); };
     $("#pubDl").onclick = () => { if (dirty) return toast("Click Save first"); dl("content.js", "window.RMS_CONTENT = " + JSON.stringify(file()) + ";\n", "text/javascript"); log("Downloaded the website update"); };
-    $("#rsLive").onclick = async () => { if (!await ask("Restore what is online?", "Your unpublished changes in Cardo will be discarded.")) return; localStorage.removeItem(STORE); log("Restored the online version"); location.reload(); };
+    $("#rsLive").onclick = async () => { if (!await ask("Restore what is online?", "Your unpublished changes in Cardo will be discarded.")) return; localStorage.removeItem(STORE); log("Restored the online version"); (window.__realURL?location.replace(window.__realURL):location.reload()); };
     $("#rsOrig").onclick = async () => { if (!await ask("Restore the launch version?", "Cardo will show both websites as they were at launch. To put it online, publish.")) return; C = JSON.parse(JSON.stringify(window.RMS_ORIGINAL || RMS_DEFAULT)); C._ts = Date.now(); LS.set(STORE, C); setDirty(false); log("Restored the launch version"); toast("Launch version restored in Cardo — publish to put it online"); go("website"); };
   },
 
@@ -1442,7 +1443,7 @@ const doLogin = async () => {
   me = s; try { sessionStorage.setItem(SESS, JSON.stringify(s)); } catch (x) { } $("#lp").value = ""; $("#lgo").disabled = false; $("#lerr").textContent = ""; log("Signed in"); start(); };
 $("#lgo").onclick = doLogin; ["#lu", "#lp"].forEach(x => $(x).addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); }));
 $("#lshow").onclick = () => { const i = $("#lp"); i.type = i.type === "password" ? "text" : "password"; };
-async function signOut() { try { if (me && me.token) svcRaw({ action: "logout", token: me.token }).catch(() => { }); sessionStorage.removeItem(SESS); } catch (x) { } location.reload(); }
+async function signOut() { try { if (me && me.token) svcRaw({ action: "logout", token: me.token }).catch(() => { }); sessionStorage.removeItem(SESS); } catch (x) { } (window.__realURL?location.replace(window.__realURL):location.reload()); }
 $("#logout").onclick = async () => { if (dirty && !await ask("Discard unsaved changes?")) return; signOut(); };
 $("#lgSeal").src = RMS_IMG.logo_rm; $("#lgName").src = RMS_IMG.seminary_name; $("#lart").style.backgroundImage = `url("${RMS_IMG.front_page}")`;
 try { const s = JSON.parse(sessionStorage.getItem(SESS) || "null"); if (s && s.u) { me = s; start(); } } catch (x) { }
