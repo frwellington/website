@@ -1349,6 +1349,15 @@ body.zf-open{overflow:hidden}
 @media(max-width:560px){.zf{padding:0}.zf-card{height:100vh;height:100dvh;max-width:none;border-radius:0}}
 /* ===== Phone & tablet polish (desktop unchanged) ===== */
 @media(max-width:1180px){.menu{display:none}}
+/* Phones & tablets: photo reels scroll natively (light on memory) */
+@media(max-width:1024px){
+.ofilm,.grstage{-webkit-mask-image:none;mask-image:none;transform:none;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.ofilm::-webkit-scrollbar,.grstage::-webkit-scrollbar{display:none}
+.otrack.run,.grtrack.run{animation:none!important}
+.obeam,.ograin,.grlight,.grbokeh{display:none}
+.gpr{animation:none}.gpr img{filter:none}.gyr b{filter:none}
+.grwire{display:none}.grtrack{background:linear-gradient(90deg,#7a5c22,#f6e3a8 25%,#b8903e 50%,#f6e3a8 75%,#7a5c22) 0 6px/600px 2px repeat-x}
+}
 @media(max-width:1024px){
 html,body{overflow-x:hidden;overflow-x:clip}
 .welcome>*,.contact>*,.tiers>*,.give2>*,.givebox>*,.ggrid>*,.two>*,.hist>*,.lreader>*,.litwrap>*,.chapel>*,.priests>*,.waytop>*,.brick>*{min-width:0}
@@ -2572,6 +2581,7 @@ function jSetBg(el, i) {
 function jLazy(center) {
   J.leaves.forEach((lf, k) => {
     const near = Math.abs(k - center) <= 3;
+    if (J.single || innerWidth <= 1024) lf.style.display = Math.abs(k - center) <= 4 ? "" : "none"; else lf.style.display = "";
     if (J.single) jSetBg(lf.children[0], near ? k : -1);
     else { jSetBg(lf.children[0], near ? 2 * k : -1); jSetBg(lf.children[1], near ? 2 * k + 1 : -1); }
   });
@@ -3022,7 +3032,7 @@ function buildReels() {
     const pIx = n => n ? PL().findIndex(p => p.name.includes(n)) : -1;
     const ORD = R.ord.concat((C.filmExtra || []).filter(f => f && f.photo).map(f => ({ y: +f.year || 0, n: f.name || "", s: f.photo, w: 559, h: 400, x: 1 }))).sort((a, b) => a.y - b.y);
     const one = ORD.map(f => `<figure class="ofr" data-y="${f.y}" data-p="${pIx(f.n)}"${pIx(f.n) >= 0 ? ` role="button" tabindex="0"` : ""}><img src="${f.s}" width="${f.w}" height="${f.h}" alt="" draggable="false" loading="lazy" decoding="async"><figcaption>RMS ▸ ${f.y}</figcaption>${pIx(f.n) >= 0 ? `<b class="onm">${esc(PL()[pIx(f.n)].name)}</b>` : f.x && f.n ? `<b class="onm">${esc(f.n)}</b>` : ""}</figure>`).join("");
-    ot.innerHTML = one + one; ot.dataset.ok = 1; onmFit(); addEventListener("resize", onmFit);
+    ot.innerHTML = one + one; ot.dataset.ok = 1; reelScroll(ot.parentNode, ot); onmFit(); addEventListener("resize", onmFit);
     const go = () => { const w = ot.scrollWidth / 2; if (!w) return requestAnimationFrame(go); ot.style.animationDuration = Math.round(w / 38) + "s"; ot.classList.add("run"); };
     requestAnimationFrame(go);
     const film = ot.parentNode; let vis = false;
@@ -3038,10 +3048,21 @@ function buildReels() {
     GL.forEach((f, k) => { if (f.y !== prev) { prev = f.y; h += `<div class="gyr"><small>Gala Dinner</small><b>${f.y}</b><i></i></div>`; }
       h += `<figure class="gpr" style="--r:${tilt[k % 6]}deg;--d:${(k % 5) * -1.3}s"><span class="gclip"></span><img src="${f.s}" width="${f.w}" height="${f.h}" alt="" draggable="false" loading="lazy" decoding="async"><figcaption>${f.y}</figcaption></figure>`; });
     gt.innerHTML = h + h; gt.dataset.ok = 1;
+    reelScroll(gt.parentNode, gt);
     const ys = GL.map(f => f.y); $("#grSpan").textContent = Math.min(...ys) + " — " + Math.max(...ys);
     const go = () => { const w = gt.scrollWidth / 2; if (!w) return requestAnimationFrame(go); gt.style.animationDuration = Math.round(w / 34) + "s"; gt.classList.add("run"); };
     requestAnimationFrame(go);
   }
+}
+/* Phones & tablets: move the reels by scrolling instead of one giant animated layer */
+function reelScroll(st, tr) {
+  if (innerWidth > 1024 || st._rs) return; st._rs = 1; let vis = false, hold = 0, x = 0, last = 0;
+  new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(st);
+  const stop = () => { hold = Date.now() + 2500; }; ["touchstart", "pointerdown", "wheel"].forEach(v => st.addEventListener(v, stop, { passive: true }));
+  st.addEventListener("scroll", () => { if (Date.now() < hold) x = st.scrollLeft; }, { passive: true });
+  const step = t => { requestAnimationFrame(step); const dt = Math.min(64, t - (last || t)); last = t; if (!vis || Date.now() < hold || document.hidden) return;
+    const half = tr.scrollWidth / 2; if (!half) return; x += dt * 0.035; if (x >= half) x -= half; st.scrollLeft = x; };
+  requestAnimationFrame(step);
 }
 /* Card shown when the mouse is over a priest (tap on phones) */
 let pcT = 0, pcI = -1;
