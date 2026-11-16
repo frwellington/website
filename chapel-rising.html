@@ -773,6 +773,17 @@ footer.mfoot a:hover{color:#e8cf8e}
 body.zf-open .fab,body.sk-open .fab{display:none}
 /* phones: every button stays on one line, in all four languages */
 @media(max-width:600px){.btn{letter-spacing:.06em;padding-left:14px;padding-right:14px;white-space:nowrap;font-size:clamp(.6rem,3.1vw,.78rem);gap:6px;max-width:100%}.need .btn,.calc-out .btn{align-self:stretch}}
+/* ===== Phone & tablet polish (desktop unchanged) ===== */
+@media(max-width:1024px){html,body{overflow-x:hidden;overflow-x:clip}.overview>*{min-width:0}.hero .bg{filter:brightness(.62)}}
+@media(max-width:760px){
+.nav .wrap{gap:10px;padding-left:16px;padding-right:16px}
+.pane b{font-size:.62rem;letter-spacing:.02em}
+.fig-photo{min-height:0;display:flex;flex-direction:column}
+.fig-photo img{position:relative;inset:auto;height:auto;aspect-ratio:4/3}
+.fig-photo figcaption{position:relative;padding:20px 22px 22px;background:#0d1628}
+.fab{padding:5px;transform:scale(.86);transform-origin:100% 100%}.fab>span:not(.avatar){display:none}
+.legend li{grid-template-columns:12px 1fr auto;gap:4px 12px}.legend .p{grid-column:3;min-width:0}.legend .n{font-size:1rem}.legend .v{font-size:1.15rem;grid-column:2/4;grid-row:2}
+}
 </style>
 <script>document.write('<script src="assets/content.js?t='+Math.floor(Date.now()/60000)+'"><\/script>');</script>
 </head>

@@ -881,13 +881,24 @@ function bindLiturgy() {
 /* ONE Google service for the whole platform. Its URL is published with both websites (C.way.mailEndpoint). */
 const svcUrl = () => (C.way && C.way.mailEndpoint || "").trim();
 async function svcRaw(body) { const r = await fetch(svcUrl(), { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) }); return r.json(); }
-async function svc(body) {
-  if (!svcUrl()) return { ok: false, error: "nourl" };
-  if (!me || !me.token) return { ok: false, error: "offline" };
+async function svcLive(body) {
   const j = await svcRaw(Object.assign({ token: me.token }, body));
   if (!j.ok && j.error === "auth") { toast("Your session has ended — please sign in again"); setTimeout(signOut, 1200); }
   return j;
 }
+/* Pages open at once: what was read from the Google service is shown immediately and refreshed in the background */
+const SVC_CACHE = {}, SVC_READ = ["inbox", "alerts", "visits", "donations", "bricks", "activity", "users", "recipients"];
+function svcRefresh() { const a = document.activeElement, v = $("#view"); if (!v || (a && v.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) || document.querySelector(".drawer.on")) return; const y = scrollY; try { go(cur); } catch (e) { } scrollTo(0, y); }
+async function svc(body) {
+  if (!svcUrl()) return { ok: false, error: "nourl" };
+  if (!me || !me.token) return { ok: false, error: "offline" };
+  const key = SVC_READ.includes(body.action) && Object.keys(body).length === 1 ? body.action : null;
+  if (!key) { const j = await svcLive(body); if (!["log", "whoami", "visit"].includes(body.action)) Object.keys(SVC_CACHE).forEach(k => delete SVC_CACHE[k]); return j; }
+  const c = SVC_CACHE[key];
+  if (c) { if (Date.now() - c.t > 3000 && !c.p) c.p = svcLive(body).then(j => { c.p = null; if (j && j.ok) { const s = JSON.stringify(j), changed = s !== c.s; c.s = s; c.t = Date.now(); if (changed) svcRefresh(); } }).catch(() => { c.p = null; }); return JSON.parse(c.s); }
+  const j = await svcLive(body); if (j && j.ok) SVC_CACHE[key] = { s: JSON.stringify(j), t: Date.now() }; return j;
+}
+function svcWarm() { SVC_READ.forEach(a => { if ((a === "users" || a === "recipients") && !can("Admin")) return; if (!SVC_CACHE[a]) svc({ action: a }).catch(() => { }); }); }
 const GIFT_TYPES = ["Give stock", "Gift above $20,000"], isGift = m => GIFT_TYPES.includes(m.type);
 /* Live messages and sign-ups (Sheet "RMS Website — Data") are kept here for Inbox, Gift messages and Updates list */
 async function syncInbox() {
@@ -1430,7 +1441,7 @@ function diacInit() {
 }
 
 /* Auth (demo — replaced by server sign-in in production) */
-function start() { $("#login").style.display = "none"; $("#app").classList.add("on"); $("#who").textContent = `${me.name} · ${me.role}`; $("#saveAll").style.display = $("#pubTop").style.display = can("Editor") ? "" : "none"; go("dash"); loadAlerts(); diacInit(); if (me.token) syncInbox().then(r => { if (r === "on") { side(); if (cur === "dash") go("dash"); } }); }
+function start() { setTimeout(() => { try { svcWarm(); } catch (e) { } }, 800); $("#login").style.display = "none"; $("#app").classList.add("on"); $("#who").textContent = `${me.name} · ${me.role}`; $("#saveAll").style.display = $("#pubTop").style.display = can("Editor") ? "" : "none"; go("dash"); loadAlerts(); diacInit(); if (me.token) syncInbox().then(r => { if (r === "on") { side(); if (cur === "dash") go("dash"); } }); }
 const doLogin = async () => {
   const u = normUser($("#lu").value), p = $("#lp").value, err = t => { $("#lerr").textContent = t; $("#lgo").disabled = false; };
   if (!u || !p) return err("Enter your username and password.");
