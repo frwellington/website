@@ -685,6 +685,7 @@ const CAMP_KEYS = ["framing", "roofing", "sheathing", "glass", "concrete", "syst
   ["gtDate", "brickPrice", "textKeyword", "textNumber"].forEach(k => { if (c[k] == null || c[k] === "") c[k] = D[k]; });
   c.text = Object.assign({}, D.text, c.text || {}); Object.keys(c.text).forEach(k => { if (!(k in D.text)) delete c.text[k]; });
   c.photos = c.photos || {}; delete c.i18n; c.tr = c.tr || {};
+  [["Type a name and a line below", "Type a name below"], ["Escriba un nombre y una frase abajo", "Escriba un nombre abajo"], ["Digite um nome e uma frase abaixo", "Digite um nome abaixo"], ["Scrivi un nome e una frase qui sotto", "Scrivi un nome qui sotto"]].forEach(([o, n]) => [c.text].concat(Object.values(c.tr)).forEach(t => { if (t && t["brick.3"]) t["brick.3"] = t["brick.3"].split(o).join(n); if (t) delete t["brick.5"]; }));
   C.give = Object.assign({}, RMS_DEFAULT.give || {}, C.give || {}); ["missionHide", "filmExtra", "galaReel"].forEach(k => { if (!Array.isArray(C[k])) C[k] = []; });
   if (C.gala) { if (!Array.isArray(C.gala.more)) C.gala.more = []; if (!C.gala.mode) C.gala.mode = "auto"; }
 })();
