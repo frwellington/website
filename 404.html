@@ -3,24 +3,9 @@
 <meta name="robots" content="noindex">
 <script>
 (function(){
-  var p = (location.pathname + " " + location.hash).toLowerCase(), t = "/";
-  var map = [
-    [/chapel|rising|construct|brick|building/, "/chapel-rising.html"],
-    [/cardo|domus|admin|staff-login/, "/cardo.html"],
-    [/event|gala|dinner|ticket/, "/#gala"],
-    [/donat|give|giving|support|sponsor|contribut/, "/#give"],
-    [/seminarian/, "/#seminarians"],
-    [/priest|ordination|alumni/, "/#priests"],
-    [/formation|vocation|discern/, "/#formation"],
-    [/history/, "/#history"],
-    [/about|mission|who-we-are|seminary|rector/, "/#about"],
-    [/news|blog|post|update|newsletter/, "/#news"],
-    [/journal/, "/#journal"],
-    [/media|photo|video|gallery/, "/#media"],
-    [/liturgy|mass|reading|prayer/, "/#liturgy"],
-    [/contact|visit|location|map|way/, "/#contact"]
-  ];
-  for (var i = 0; i < map.length; i++) if (map[i][0].test(p)) { t = map[i][1]; break; }
+  var p = location.pathname.toLowerCase(), t = "/";
+  if (/chapel|rising|construct|brick|building/.test(p)) t = "/chapel-rising.html";
+  else if (/cardo|domus|admin/.test(p)) t = "/cardo.html";
   location.replace(t);
 })();
 </script>
