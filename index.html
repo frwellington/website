@@ -1157,6 +1157,7 @@ footer a:hover{color:var(--gold2)}
  transition:transform 1.1s cubic-bezier(.22,.8,.2,1),opacity 1.1s,box-shadow .6s;display:flex;flex-direction:column}
 .evk::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(232,207,142,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(232,207,142,.05) 1px,transparent 1px);background-size:36px 36px;-webkit-mask-image:linear-gradient(160deg,#000,transparent 70%);mask-image:linear-gradient(160deg,#000,transparent 70%)}
 .evk::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(246,227,168,.13) 50%,transparent 65%);background-size:260% 100%;background-position:130% 0;opacity:0}
+.evk.evph{aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end}.evk .evbg{position:absolute;inset:0;z-index:0;pointer-events:none}.evk .evbg img{width:100%;height:100%;object-fit:cover;display:block}.evk .evbg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,17,40,.62) 0%,rgba(9,17,40,.12) 30%,rgba(9,17,40,.25) 52%,rgba(9,17,40,.92) 100%)}.evk.evph>*:not(.evbg):not(.evbar):not(.evtop){position:relative;z-index:1}.evk.evph .evtop{z-index:1}.evk.evph .evbar{z-index:2}.evk.evph .evtop{position:absolute;top:30px;left:32px;right:32px;margin:0}.evk.evph p{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}.evk.evph h3,.evk.evph .dt,.evk.evph p,.evk.evph .ty,.evk.evph .evn{color:#fbf6ea!important;text-shadow:0 1px 10px rgba(0,0,0,.55)}.evk.evph .dt{color:#f0d79a!important}.evk.evph .ty{color:#f0d79a!important}
 .evk.on{cursor:default;box-shadow:0 50px 90px -36px rgba(10,22,56,.85),0 0 0 1px rgba(246,227,168,.55),0 0 50px -12px rgba(232,207,142,.45)}
 .evk.on::after{opacity:1;animation:evsheen 7s ease-in-out infinite}
 @keyframes evsheen{0%{background-position:130% 0}45%,100%{background-position:-30% 0}}
@@ -2850,9 +2851,9 @@ const EVI = { concert: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/
 let EV = { cur: 0, t: null, hov: 0, vis: 0 };
 function renderEvents() {
   const st = $("#events"); if (!st) return; const L = C.events || [], n = L.length;
-  st.innerHTML = L.map((e, i) => `<article class="evk t-${esc(e.type)}" data-i="${i}" tabindex="-1"><div class="evbar"><i></i></div>
+  st.innerHTML = L.map((e, i) => `<article class="evk t-${esc(e.type)}${e.photo ? " evph" : ""}" data-i="${i}" tabindex="-1">${e.photo ? `<div class="evbg"><img src="${img(e.photo, 1200, 1200)}" alt="" draggable="false"></div>` : ""}<div class="evbar"><i></i></div>
     <div class="evtop"><span class="ty">${esc(t("types")[e.type] || e.type)}</span><span class="evn">${String(i + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}</span></div>
-    <h3>${esc(tr(e.title))}</h3><span class="dt">${esc(e.date)}</span>${(e.logoImg || (e.logo && (window.RMS_IMG || {})[e.logo])) ? `<div class="evlogo ${esc(e.logo || "custom")}"><img src="${e.logoImg ? img(e.logoImg, 900, 600) : RMS_IMG[e.logo]}" alt="${esc(tr(e.title))}" draggable="false"></div><p class="evst">${esc(tr(e.text))}</p>` : `<p>${esc(tr(e.text))}</p>`}</article>`).join("");
+    <h3>${esc(tr(e.title))}</h3><span class="dt">${esc(e.date)}</span>${!e.photo && (e.logoImg || (e.logo && (window.RMS_IMG || {})[e.logo])) ? `<div class="evlogo ${esc(e.logo || "custom")}"><img src="${e.logoImg ? img(e.logoImg, 900, 600) : RMS_IMG[e.logo]}" alt="${esc(tr(e.title))}" draggable="false"></div><p class="evst">${esc(tr(e.text))}</p>` : `<p>${esc(tr(e.text))}</p>`}</article>`).join("");
   $("#evDots").innerHTML = L.map((e, i) => `<button type="button" aria-label="${i + 1}" data-i="${i}"></button>`).join("");
   $$("#evDots button").forEach(b => b.onclick = () => evGo(+b.dataset.i, 1));
   $$("#events .evk").forEach(c => c.onclick = () => { if (+c.dataset.i !== EV.cur) evGo(+c.dataset.i, 1); });
@@ -2869,7 +2870,7 @@ function renderEventsTimer() { EV.t = setInterval(() => { if (!EV.hov && EV.vis 
 function evLay() {
   const st = $("#events"), K = $$("#events .evk"), n = K.length; if (!n) return; const w = K[0].offsetWidth, mob = innerWidth < 760;
   K.forEach(k => { const h = k.querySelector("h3"); h.style.fontSize = ""; const room = k.clientWidth - parseFloat(getComputedStyle(k).paddingLeft) - parseFloat(getComputedStyle(k).paddingRight); if (h.scrollWidth > room) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * room / h.scrollWidth * .98).toFixed(2) + "px"; });
-  const H = Math.max(...K.map(k => k.offsetHeight)); K.forEach(k => k.style.top = Math.round((H - k.offsetHeight) / 2 + 20) + "px"); st.style.height = H + 60 + "px";
+  K.forEach(k => k.style.height = ""); const H = Math.max(...K.map(k => k.offsetHeight)); K.forEach(k => { k.style.height = H + "px"; k.style.top = "20px"; }); st.style.height = H + 60 + "px";
   const T = d => `translateX(calc(-50% + ${d * (mob ? w * 1.05 : w * .92 + 26)}px)) scale(${d ? (mob ? .92 : .84) : 1})`;
   K.forEach((k, i) => { let d = i - EV.cur; if (d > n / 2) d -= n; if (d <= -n / 2) d += n; const a = Math.abs(d), pd = k.dataset.d == null ? d : +k.dataset.d; k.dataset.d = d;
     clearTimeout(k._t); k.style.zIndex = 10 - a; k.classList.toggle("on", d === 0); k.classList.toggle("evside", a === 1); k.style.pointerEvents = a > 1 ? "none" : "";
