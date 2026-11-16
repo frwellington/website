@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Redemptoris Mater Seminary · Boston</title>
+<meta name="robots" content="noindex">
+<script>
+(function(){
+  var p = (location.pathname + " " + location.hash).toLowerCase(), t = "/";
+  var map = [
+    [/chapel|rising|construct|brick|building/, "/chapel-rising.html"],
+    [/cardo|domus|admin|staff-login/, "/cardo.html"],
+    [/event|gala|dinner|ticket/, "/#gala"],
+    [/donat|give|giving|support|sponsor|contribut/, "/#give"],
+    [/seminarian/, "/#seminarians"],
+    [/priest|ordination|alumni/, "/#priests"],
+    [/formation|vocation|discern/, "/#formation"],
+    [/history/, "/#history"],
+    [/about|mission|who-we-are|seminary|rector/, "/#about"],
+    [/news|blog|post|update|newsletter/, "/#news"],
+    [/journal/, "/#journal"],
+    [/media|photo|video|gallery/, "/#media"],
+    [/liturgy|mass|reading|prayer/, "/#liturgy"],
+    [/contact|visit|location|map|way/, "/#contact"]
+  ];
+  for (var i = 0; i < map.length; i++) if (map[i][0].test(p)) { t = map[i][1]; break; }
+  location.replace(t);
+})();
+</script>
+<meta http-equiv="refresh" content="2;url=/">
+</head><body style="font-family:Georgia,serif;text-align:center;padding:60px;color:#1d2433">
+<p>Redirecting to <a href="/">rmsboston.org</a>…</p>
+</body></html>
