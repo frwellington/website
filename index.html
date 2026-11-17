@@ -1360,13 +1360,13 @@ body.zf-open{overflow:hidden}
 @keyframes drpFall{0%{opacity:0;transform:translateY(-110vh) scale(.62,1.3)}55%{opacity:1;transform:translateY(10px) scale(1.12,.86)}72%{transform:translateY(-8px) scale(.95,1.06)}86%{transform:translateY(2px) scale(1.02,.98)}100%{opacity:1;transform:none}}
 @keyframes drpPop{0%{opacity:1;transform:none}35%{transform:scale(1.1,.9)}100%{opacity:0;transform:scale(.2)}}
 .drp-sh{position:absolute;left:16%;width:84%;top:calc(var(--ds) * .9);height:calc(var(--ds) * .26);border-radius:50%;background:radial-gradient(38% 30% at 50% 46%,rgba(255,244,210,.55),rgba(255,244,210,0) 70%),radial-gradient(closest-side,rgba(8,17,39,.5) 30%,rgba(8,17,39,.22) 62%,rgba(8,17,39,0));filter:blur(6px);transform:translateX(var(--shx,10px)) scale(var(--shs,1));opacity:var(--sho,.85);z-index:-1}
-.drp-tilt{perspective:900px;transform-origin:50% 8%;transform:scale(var(--sx,1),var(--sy,1));transition:transform .5s cubic-bezier(.3,.7,.3,1)}
+.drp-tilt{perspective:900px;transform-origin:50% 8%;transform:scale(var(--sx,1),var(--sy,1));transition:transform .3s cubic-bezier(.3,.7,.3,1)}
 .drp-b{position:relative;display:block;width:var(--ds);height:var(--ds);border-radius:50%;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .35s cubic-bezier(.2,.8,.2,1);animation:drpMorph 9s ease-in-out infinite;box-shadow:0 26px 50px -22px rgba(8,17,39,.55),0 8px 16px -8px rgba(8,17,39,.35);cursor:pointer}
 .drp-c::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(closest-side,rgba(255,255,255,0) 70%,rgba(190,215,240,.14) 86%,rgba(255,255,255,.34) 96%,rgba(255,255,255,0) 100%)}
-.drp-c{position:absolute;inset:0;border-radius:inherit;overflow:hidden;-webkit-mask-image:-webkit-radial-gradient(white,black);isolation:isolate}
+.drp-c{position:absolute;inset:0;border-radius:inherit;overflow:hidden;-webkit-backdrop-filter:blur(2.4px) saturate(1.5) brightness(.9) contrast(1.1);backdrop-filter:blur(2.4px) saturate(1.5) brightness(.9) contrast(1.1);background:radial-gradient(90% 80% at 50% 60%,rgba(20,40,70,.16),rgba(150,190,230,.08) 70%,rgba(255,255,255,.06))}
 @keyframes drpMorph{0%,100%{border-radius:49% 51% 50% 50%/46% 46% 54% 54%}25%{border-radius:52% 48% 49% 51%/44% 47% 53% 56%}50%{border-radius:48% 52% 52% 48%/47% 44% 56% 53%}75%{border-radius:51% 49% 48% 52%/45% 46% 54% 55%}}
 .drp-img{position:absolute;inset:-9%;background:center/cover no-repeat;filter:saturate(1.12) contrast(1.06);transform:translate3d(var(--px,0),var(--py,0),0) scale(1.1);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-.drp-tint{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,17,39,0) 44%,rgba(8,17,39,.42) 62%,rgba(8,17,39,.9) 100%)}
+.drp-tint{position:absolute;inset:0;background:radial-gradient(62% 34% at 50% 60%,rgba(8,17,39,.34),rgba(8,17,39,0) 100%)}
 .drp-gl{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(110% 80% at var(--lx,30%) var(--ly,14%),rgba(255,255,255,.5) 0,rgba(255,255,255,.12) 24%,rgba(255,255,255,0) 44%),radial-gradient(46% 20% at 54% 91%,rgba(255,248,222,.62),rgba(255,248,222,0) 70%),radial-gradient(closest-side,rgba(0,0,0,0) 78%,rgba(8,17,39,.38) 100%);box-shadow:inset 0 -18px 30px rgba(8,17,39,.42),inset 0 12px 24px rgba(255,255,255,.32),inset 0 0 0 1.5px rgba(255,255,255,.28),inset 6px 8px 22px rgba(255,255,255,.12),inset -10px -6px 26px rgba(8,17,39,.32)}
 .drp-rim{display:none;position:absolute;inset:-2px;border-radius:inherit;pointer-events:none;background:conic-gradient(from var(--ra,0deg),rgba(246,227,168,0),rgba(246,227,168,.75),rgba(255,255,255,.0) 22%,rgba(246,227,168,0) 50%,rgba(255,255,255,.55) 64%,rgba(246,227,168,0) 80%);-webkit-mask:radial-gradient(closest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));mask:radial-gradient(closest-side,transparent calc(100% - 3px),#000 calc(100% - 2px));animation:drpRim 7s linear infinite}
 @property --ra{syntax:"<angle>";inherits:false;initial-value:0deg}
@@ -1374,9 +1374,9 @@ body.zf-open{overflow:hidden}
 .drp-sp{position:absolute;left:calc(var(--lx,30%) - 11%);top:calc(var(--ly,14%) - 2%);width:20%;height:9%;border-radius:50%;background:radial-gradient(closest-side,#fff 30%,rgba(255,255,255,.65) 55%,rgba(255,255,255,0));transform:rotate(-30deg);pointer-events:none;filter:blur(.3px)}
 .drp-sp::after{content:"";position:absolute;left:78%;top:115%;width:22%;height:55%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(255,255,255,0))}
 .drp-sp2{position:absolute;right:20%;bottom:9%;width:7%;height:4%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.75),rgba(255,255,255,0));pointer-events:none}
-.drp-t{position:absolute;left:0;right:0;bottom:12%;padding:0 17%;text-align:center;color:#fff;pointer-events:none}
-.drp-t small{display:block;font-size:.5rem;letter-spacing:.32em;text-transform:uppercase;color:#f1dc9e;font-weight:700;margin-bottom:6px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-.drp-t b{display:block;font-family:var(--serif);font-weight:500;font-size:calc(var(--ds) * .082);line-height:1.14;text-shadow:0 2px 14px rgba(0,0,0,.65)}
+.drp-t{position:absolute;left:0;right:0;top:50%;transform:translateY(-38%);padding:0 15%;text-align:center;color:#fff;pointer-events:none}
+.drp-t small{display:block;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:#f6e3a8;font-weight:700;margin-bottom:7px;text-shadow:0 1px 2px rgba(0,0,0,.85),0 0 12px rgba(8,17,39,.9)}
+.drp-t b{display:block;font-family:var(--serif);font-weight:600;font-size:calc(var(--ds) * .1);line-height:1.1;letter-spacing:.005em;text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 14px rgba(8,17,39,.95),0 0 30px rgba(8,17,39,.7)}
 .drp-act{display:flex;gap:10px;justify-content:center;margin-top:30px}
 .drp-act button,.drp-act a{appearance:none;border:0;font:700 .68rem/1 var(--sans,system-ui);letter-spacing:.16em;text-transform:uppercase;padding:12px 18px;border-radius:999px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:transform .25s,box-shadow .25s,background .25s}
 .drp-ok{background:rgba(255,255,255,.9);color:#14213d;box-shadow:0 10px 24px -10px rgba(8,17,39,.5),inset 0 0 0 1px rgba(20,33,61,.15);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
@@ -1386,7 +1386,7 @@ body.zf-open{overflow:hidden}
 .drp-act button:focus-visible,.drp-act a:focus-visible{outline:2px solid #f6e3a8;outline-offset:3px}
 .drp-bub{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.95) 0,rgba(255,255,255,.55) 14%,rgba(255,255,255,.06) 38%,rgba(255,255,255,0) 58%,rgba(255,255,255,.22) 80%,rgba(255,255,255,.5) 92%,rgba(255,255,255,0) 100%);box-shadow:inset -1px -1px 2px rgba(8,17,39,.25),0 0 2px rgba(255,255,255,.25);animation:drpBub var(--bd,9s) ease-in-out var(--bdl,0s) infinite}
 @keyframes drpBub{0%{transform:translate(0,0) scale(1);opacity:0}12%{opacity:.95}50%{transform:translate(var(--bx,4px),calc(var(--by,-30px) * .5)) scale(1.06)}88%{opacity:.85}100%{transform:translate(calc(var(--bx,4px) * -.4),var(--by,-30px)) scale(.92);opacity:0}}
-.drp-trl{position:fixed;left:0;top:0;z-index:79;pointer-events:none;border-radius:50% 50% 48% 52%/60% 60% 40% 40%;background:radial-gradient(70% 60% at 35% 30%,rgba(255,255,255,.55),rgba(255,255,255,.08) 60%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(200,215,235,.16));box-shadow:inset 0 -1px 2px rgba(8,17,39,.25),0 1px 2px rgba(8,17,39,.18),inset 0 0 0 1px rgba(255,255,255,.22);animation:drpTrl 5s ease-out forwards}
+.drp-trl{position:fixed;left:0;top:0;z-index:79;pointer-events:none;border-radius:50% 50% 48% 52%/60% 60% 40% 40%;background:radial-gradient(70% 60% at 35% 30%,rgba(255,255,255,.55),rgba(255,255,255,.08) 60%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(200,215,235,.16));box-shadow:inset 0 -1px 2px rgba(8,17,39,.25),0 1px 2px rgba(8,17,39,.18),inset 0 0 0 1px rgba(255,255,255,.22);animation:drpTrl 7s ease-out forwards}
 @keyframes drpTrl{0%{opacity:.85}60%{opacity:.5}100%{opacity:0;transform:var(--tt) scale(.6)}}
 .drp.reform .drp-in{animation:drpGone .9s ease-in forwards}
 @keyframes drpGone{0%{opacity:1;transform:none}100%{opacity:0;transform:translateY(40px) scale(.55,1.25)}}
@@ -3128,7 +3128,7 @@ function dropBubbles() { let h = ""; const B = [[20, 56, 7], [30, 71, 4], [63, 5
 function dropInit() {
   const o = C.drop || {}; if (o.show === "no") return; try { if (sessionStorage.getItem("rmsDrop")) return; } catch (e) {}
   const d = document.createElement("div"); d.className = "drp"; d.id = "drp"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "The Chapel is Rising");
-  d.innerHTML = `<div class="drp-in"><div class="drp-sh"></div><span class="drp-rip"></span><div class="drp-tilt"><a class="drp-b" href="chapel-rising.html" aria-label="The Chapel is Rising"><div class="drp-c"><div class="drp-img" style="background-image:url('${img(o.photo || DROP_IMG)}')"></div><div class="drp-tint"></div>${dropBubbles()}<div class="drp-gl"></div><div class="drp-rim"></div><span class="drp-sp"></span><span class="drp-sp2"></span><div class="drp-t"><small></small><b></b></div></div></a></div><div class="drp-act"><button type="button" class="drp-ok"></button><a class="drp-go" href="chapel-rising.html"></a></div></div>`;
+  d.innerHTML = `<div class="drp-in"><div class="drp-sh"></div><span class="drp-rip"></span><div class="drp-tilt"><a class="drp-b" href="chapel-rising.html" aria-label="The Chapel is Rising"><div class="drp-c">${o.photo ? `<div class="drp-img" style="background-image:url('${img(o.photo)}');opacity:.55"></div>` : ""}<div class="drp-tint"></div>${dropBubbles()}<div class="drp-gl"></div><div class="drp-rim"></div><span class="drp-sp"></span><span class="drp-sp2"></span><div class="drp-t"><small></small><b></b></div></div></a></div><div class="drp-act"><button type="button" class="drp-ok"></button><a class="drp-go" href="chapel-rising.html"></a></div></div>`;
   document.body.appendChild(d); dropLang();
   const B = d.querySelector(".drp-b"), red = matchMedia("(prefers-reduced-motion:reduce)").matches;
   let W = 0, H = 0, x = 0, y = 0, t0 = performance.now(), hov = false, alive = true, slow = 0, ph = Math.random() * 6.28, last = 0, hold = 0;
@@ -3137,32 +3137,32 @@ function dropInit() {
   d.querySelector(".drp-ok").addEventListener("click", e => { e.preventDefault(); e.stopPropagation(); close(); });
   d.querySelectorAll('a').forEach(a => a.addEventListener("click", () => { try { sessionStorage.setItem("rmsDrop", "1"); } catch (e) {} }));
   addEventListener("keydown", e => { if (e.key === "Escape" && alive) close(); });
-  d.addEventListener("pointerenter", () => hov = true); d.addEventListener("pointerdown", () => hold = performance.now() + 4000, { passive: true }); d.addEventListener("pointerleave", () => { hov = false; B.style.setProperty("--rx", "0deg"); B.style.setProperty("--ry", "0deg"); B.querySelector(".drp-img").style.setProperty("--px", "0px"); B.querySelector(".drp-img").style.setProperty("--py", "0px"); });
+  d.addEventListener("pointerenter", () => hov = true); d.addEventListener("pointerdown", () => hold = performance.now() + 4000, { passive: true }); d.addEventListener("pointerleave", () => { hov = false; B.style.setProperty("--rx", "0deg"); B.style.setProperty("--ry", "0deg"); const i0 = B.querySelector(".drp-img"); if (i0) { i0.style.setProperty("--px", "0px"); i0.style.setProperty("--py", "0px"); } });
   d.addEventListener("pointermove", e => { const r = B.getBoundingClientRect(), u = (e.clientX - r.left) / r.width - .5, v = (e.clientY - r.top) / r.height - .5;
-    B.style.setProperty("--ry", (u * 30).toFixed(2) + "deg"); B.style.setProperty("--rx", (-v * 30).toFixed(2) + "deg"); const im = B.querySelector(".drp-img"); im.style.setProperty("--px", (-u * 14).toFixed(1) + "px"); im.style.setProperty("--py", (-v * 14).toFixed(1) + "px"); });
+    B.style.setProperty("--ry", (u * 30).toFixed(2) + "deg"); B.style.setProperty("--rx", (-v * 30).toFixed(2) + "deg"); const im = B.querySelector(".drp-img"); if (im) { im.style.setProperty("--px", (-u * 14).toFixed(1) + "px"); im.style.setProperty("--py", (-v * 14).toFixed(1) + "px"); } });
   /* trickles down like a drop on a window: slides, hesitates, slides again, then a new drop forms at the top */
   let yy = 0, x0 = Math.random(), vs = 0, lastT = 0, busy = false;
   const TL = d.querySelector(".drp-tilt"), SH = d.querySelector(".drp-sh"), GL = d.querySelector(".drp-gl");
-  const trail = (px, py, w) => { const s = document.createElement("span"); s.className = "drp-trl"; const tw = w * (.05 + Math.random() * .05), th = tw * (1.3 + Math.random() * .8);
+  const trail = (px, py, w) => { const s = document.createElement("span"); s.className = "drp-trl"; const tw = w * (.06 + Math.random() * .07), th = tw * (1.2 + Math.random() * 1);
     s.style.width = tw.toFixed(1) + "px"; s.style.height = th.toFixed(1) + "px"; s.style.setProperty("--tt", `translate3d(${px - tw / 2}px,${py}px,0)`); s.style.transform = `translate3d(${(px - tw / 2).toFixed(1)}px,${py.toFixed(1)}px,0)`;
     document.body.appendChild(s); s.addEventListener("animationend", () => s.remove()); };
   const step = now => { if (!alive) return; requestAnimationFrame(step); if (!W) size(); const dt = Math.min(.05, (now - (last || now)) / 1000); last = now;
     slow += ((hov || now < hold || busy ? 0 : 1) - slow) * .05; const k = (now - t0) / 1000, ds = B.offsetWidth;
     const m = 14, top = 84, bot = innerWidth <= 760 ? 104 : 30, aw = Math.max(0, innerWidth - W - 2 * m), ah = Math.max(0, innerHeight - H - top - bot);
     /* stick-slip speed: mostly slow, now and then a gentle slide */
-    const surge = Math.pow(Math.max(0, Math.sin(k * .55 + ph)), 3), target = red ? 0 : (6 + 46 * surge) * slow; vs += (target - vs) * Math.min(1, dt * 2.5);
-    yy += vs * dt; x0 += (Math.sin(k * .21 + ph) * .006 + Math.sin(k * .53) * .003) * dt * slow;
+    const surge = Math.pow(Math.max(0, Math.sin(k * .9 + ph)), 2), target = red ? 0 : (22 + 150 * surge) * slow; vs += (target - vs) * Math.min(1, dt * 3);
+    yy += vs * dt; x0 += (Math.sin(k * .31 + ph) * .02 + Math.sin(k * .83) * .01) * dt * slow * (.4 + vs / 120);
     if (x0 < 0) x0 = 0; if (x0 > 1) x0 = 1;
     x = m + aw * x0; y = top + Math.min(yy, ah);
     d.style.transform = `translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0)`;
     /* stretch while sliding, round again when it stops */
-    const st = Math.min(1, vs / 52); TL.style.setProperty("--sy", (1 + st * .1).toFixed(3)); TL.style.setProperty("--sx", (1 - st * .05).toFixed(3));
+    const st = Math.min(1, vs / 150); TL.style.setProperty("--sy", (1 + st * .16).toFixed(3)); TL.style.setProperty("--sx", (1 - st * .07).toFixed(3));
     /* light from the top-left of the screen: highlight and shadow follow where the drop is */
     const lx = 22 + 18 * (x / Math.max(1, innerWidth)), ly = 10 + 8 * (y / Math.max(1, innerHeight)); GL.style.setProperty("--lx", lx.toFixed(1) + "%"); GL.style.setProperty("--ly", ly.toFixed(1) + "%");
     B.querySelector(".drp-sp").style.setProperty("--lx", lx.toFixed(1) + "%"); B.querySelector(".drp-sp").style.setProperty("--ly", ly.toFixed(1) + "%");
     SH.style.setProperty("--shx", (6 + 14 * (x / Math.max(1, innerWidth))).toFixed(1) + "px"); SH.style.setProperty("--shs", (1 + st * .08).toFixed(3));
     /* a thin wet trail stays behind while it moves */
-    if (vs > 9 && yy - lastT > ds * .09 && yy < ah) { lastT = yy; trail(x + W / 2 + (Math.random() - .5) * ds * .06, y + ds * .02, ds); }
+    if (vs > 14 && yy - lastT > ds * .07 && yy < ah) { lastT = yy; trail(x + W / 2 + (Math.random() - .5) * ds * .06, y + ds * .02, ds); }
     /* reached the bottom: it fades, and a new drop forms at the top */
     if (!busy && yy >= ah + 8 && !red) { busy = true; d.classList.add("reform"); setTimeout(() => { if (!alive) return; yy = 0; lastT = 0; x0 = .1 + Math.random() * .8; d.classList.remove("reform", "on"); void d.offsetWidth; d.classList.add("on"); busy = false; }, 950); }
     if (yy > ah) yy += 0; };
