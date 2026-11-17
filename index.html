@@ -1400,13 +1400,14 @@ body.zf-open{overflow:hidden}
 .menu li.mch{position:relative;display:flex;align-items:center;margin-left:6px}
 .menu a.mgold{position:relative;isolation:isolate;font-family:var(--sans);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#2a1c04;padding:11px 20px;border-radius:12px;transform:translateY(-2px);background:linear-gradient(180deg,#fff2c8 0%,#f4d27c 38%,#dcaa42 52%,#c6902e 100%);text-shadow:0 1px 0 rgba(255,248,224,.85),0 -1px 0 rgba(120,80,10,.25);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 3px rgba(120,78,12,.35),inset 0 0 0 1px rgba(255,236,180,.35),0 1px 0 #b98322,0 2px 0 #a8741b,0 3px 0 #976718,0 4px 0 #855a14,0 5px 1px rgba(60,38,6,.6),0 9px 16px -4px rgba(0,0,0,.55);animation:mgTilt 6s ease-in-out infinite;transition:box-shadow .15s;transform-origin:50% 60%;will-change:transform,opacity}
 .menu a.mgold::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.55),rgba(255,255,255,0) 55%);opacity:var(--lit,1);transition:opacity .2s}
-.menu a.mgold:hover{transform:translateY(0);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 3px rgba(120,78,12,.35),0 1px 0 #b98322,0 2px 0 #a8741b,0 3px 1px rgba(60,38,6,.6),0 6px 12px -4px rgba(0,0,0,.55)}
+.menu a.mgold:hover{animation:none;transform:perspective(600px) translateY(-9px) rotateX(var(--mx,0deg)) rotateY(var(--my,0deg)) scale(1.04);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 3px rgba(120,78,12,.35),inset 0 0 0 1px rgba(255,236,180,.35),0 1px 0 #b98322,0 2px 0 #a8741b,0 3px 0 #976718,0 4px 0 #855a14,0 5px 1px rgba(60,38,6,.6),0 16px 22px -6px rgba(0,0,0,.5)}
+.menu li.mch:hover::after{animation:none;transform:scale(.72);opacity:.45;transition:transform .25s,opacity .25s}
 .menu a.mgold:active{transform:translateY(2px);box-shadow:inset 0 2px 4px rgba(120,78,12,.45),0 1px 0 #a8741b,0 2px 6px -2px rgba(0,0,0,.5)}
 .menu a.mgold:focus-visible{outline:2px solid #fff;outline-offset:4px}
 @keyframes mgTilt{0%,100%{transform:perspective(600px) translateY(-3px) rotateX(4deg) rotateY(-5deg) rotateZ(-.4deg)}25%{transform:perspective(600px) translateY(-6px) rotateX(1deg) rotateY(0deg) rotateZ(0deg)}50%{transform:perspective(600px) translateY(-3px) rotateX(-2deg) rotateY(5deg) rotateZ(.4deg)}75%{transform:perspective(600px) translateY(-5px) rotateX(2deg) rotateY(0deg) rotateZ(0deg)}}
 .menu li.mch::after{content:"";position:absolute;left:14%;right:14%;bottom:-9px;height:12px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.5),rgba(0,0,0,0));filter:blur(2px);pointer-events:none;animation:mgShadow 6s ease-in-out infinite}
 @keyframes mgShadow{0%,50%,100%{transform:scale(1);opacity:.85}25%,75%{transform:scale(.86);opacity:.6}}
-.menu a.mgold:hover{animation-play-state:paused}
+
 @keyframes mgShine{0%,55%{left:-60%}85%,100%{left:130%}}
 .marr{position:absolute;left:50%;top:100%;margin:5px 0 0 -10px;width:20px;height:25px;pointer-events:none;animation:mgArr 1.15s cubic-bezier(.45,0,.55,1) infinite;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
 .marr svg{width:100%;height:100%;display:block}
@@ -3353,6 +3354,7 @@ $("#sideNav").addEventListener("click", e => { if (e.target.closest("a")) sideOp
 $$("#langs2 button").forEach(b => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem("rms_lang", lang); } catch (e) { } $("#aiBody").innerHTML = ""; render(); });
 window.addEventListener("storage", e => { if (e.key === STORE) { try { C = JSON.parse(e.newValue) || RMS_DEFAULT; render(); } catch (x) { } } });
 /* "Chapel Construction" label in the four languages */
+document.addEventListener("mousemove", e => { const a = e.target.closest && e.target.closest(".menu a.mgold"); if (!a) return; const r = a.getBoundingClientRect(), u = (e.clientX - r.left) / r.width - .5, v = (e.clientY - r.top) / r.height - .5; a.style.setProperty("--my", (u * 16).toFixed(1) + "deg"); a.style.setProperty("--mx", (-v * 22).toFixed(1) + "deg"); });
 const CHAPL = { en: "Chapel Construction", es: "Construcción de la Capilla", pt: "Construção da Capela", it: "Costruzione della Cappella" };
 /* Caution tape on the hero: unrolls, stays 10 s, rolls back, waits 8 s, again */
 const CTI = { en: ["The Chapel is Rising", "come and see!", "Visit the campaign"], es: ["The Chapel is Rising", "¡vengan a ver!", "Visitar la campaña"], pt: ["The Chapel is Rising", "venham ver!", "Visitar a campanha"], it: ["The Chapel is Rising", "venite a vedere!", "Visita la campagna"] };
