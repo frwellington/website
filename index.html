@@ -1396,6 +1396,51 @@ body.zf-open{overflow:hidden}
 @keyframes drpRip{0%{opacity:.9;transform:scale(.9)}100%{opacity:0;transform:scale(1.9)}}
 @media(max-width:760px){.drp{--ds:176px}.drp-act{margin-top:22px;gap:8px}.drp-act button,.drp-act a{padding:10px 14px;font-size:.6rem}.drp-t small{font-size:.42rem;letter-spacing:.2em;margin-bottom:4px}.drp-t{padding:0 13%}}
 @media(prefers-reduced-motion:reduce){.drp-b,.drp-rim{animation:none}.drp.on .drp-in{animation:none;opacity:1;transform:none}}
+/* ===== Top menu: golden "Chapel Construction" button with animated red arrow ===== */
+.menu li.mch{position:relative;display:flex;align-items:center;margin-left:6px}
+.menu a.mgold{position:relative;overflow:hidden;isolation:isolate;font-family:var(--sans);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#1a1305;padding:11px 20px;border-radius:999px;background:linear-gradient(180deg,#fff3c4 0%,#f3d27a 22%,#d9a93f 55%,#b9832a 78%,#e6bf63 100%);box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 -2px 4px rgba(120,80,10,.35) inset,0 0 0 1px rgba(120,84,18,.55),0 8px 20px -6px rgba(201,154,59,.75),0 0 22px rgba(246,214,130,.35);text-shadow:0 1px 0 rgba(255,246,214,.7);animation:mgGlow 3.2s ease-in-out infinite}
+.menu a.mgold::before{content:"";position:absolute;top:-30%;bottom:-30%;left:-60%;width:38%;z-index:-1;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.95) 50%,rgba(255,255,255,0));transform:skewX(-22deg);animation:mgShine 3.2s ease-in-out infinite}
+.menu a.mgold:hover{color:#000;transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 -2px 4px rgba(120,80,10,.35) inset,0 0 0 1px rgba(120,84,18,.6),0 12px 26px -6px rgba(201,154,59,.9),0 0 30px rgba(246,214,130,.55)}
+.menu a.mgold:focus-visible{outline:2px solid #fff;outline-offset:3px}
+@keyframes mgShine{0%,55%{left:-60%}85%,100%{left:130%}}
+@keyframes mgGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
+.marr{position:absolute;left:50%;top:100%;margin:5px 0 0 -10px;width:20px;height:25px;pointer-events:none;animation:mgArr 1.15s cubic-bezier(.45,0,.55,1) infinite;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.marr svg{width:100%;height:100%;display:block}
+@keyframes mgArr{0%,100%{transform:translateY(6px)}50%{transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.menu a.mgold,.menu a.mgold::before,.marr{animation:none}}
+@media(max-width:1560px){.menu{gap:2px}.menu a{font-size:1.1rem;padding:8px 10px}.menu a.mgold{font-size:.7rem;letter-spacing:.09em;padding:10px 15px}}
+@media(max-width:1340px){.menu a{font-size:1.02rem;padding:8px 8px}.menu a.mgold{font-size:.64rem;letter-spacing:.06em;padding:9px 12px}}
+@media(max-width:1300px){.menu a.mgold{white-space:normal;max-width:150px;text-align:center;line-height:1.18;padding:7px 14px;border-radius:18px}}
+/* ===== Hero: caution tape that unrolls across the building ===== */
+.ct{position:absolute;left:-3%;right:-3%;top:58%;z-index:4;height:var(--th);--th:clamp(54px,5.6vw,78px);transform:translateY(-50%) rotate(-2.6deg);pointer-events:none;perspective:1400px}
+.ct-in{position:absolute;inset:0;transform:rotateX(10deg);transform-style:preserve-3d}
+.ct-tape{position:absolute;inset:0;clip-path:inset(-40% var(--cp,100%) -40% 0);-webkit-clip-path:inset(-40% var(--cp,100%) -40% 0);display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,36px);overflow:visible;
+  background:
+   linear-gradient(180deg,rgba(255,255,255,.55) 0,rgba(255,255,255,.12) 18%,rgba(255,255,255,0) 40%,rgba(0,0,0,0) 62%,rgba(90,60,0,.22) 100%),
+   repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 210px,rgba(120,80,0,.10) 214px,rgba(255,255,255,.18) 219px,rgba(0,0,0,0) 226px 420px),
+   repeating-linear-gradient(-48deg,#141210 0 13px,#ffcc00 13px 26px) 0 0/100% calc(var(--th) * .16) no-repeat,
+   repeating-linear-gradient(-48deg,#141210 0 13px,#ffcc00 13px 26px) 0 100%/100% calc(var(--th) * .16) no-repeat,
+   linear-gradient(180deg,#ffd320,#f7c400 50%,#eab400);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 -1px 0 rgba(0,0,0,.25) inset;filter:drop-shadow(0 16px 14px rgba(0,0,0,.45)) drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.ct-tape::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.55) 48%,rgba(255,255,255,0) 66%);background-size:260% 100%;background-position:120% 0;mix-blend-mode:soft-light;animation:ctSheen 5.5s ease-in-out infinite}
+@keyframes ctSheen{0%{background-position:130% 0}60%,100%{background-position:-30% 0}}
+.ct-tx{font-family:var(--sans);font-weight:900;font-size:calc(var(--th) * .31);letter-spacing:.14em;text-transform:uppercase;color:#121110;white-space:nowrap;text-shadow:0 1px 0 rgba(255,236,150,.9),0 -1px 0 rgba(0,0,0,.12)}
+.ct-tx em{font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:none;font-family:var(--serif);font-size:1.22em;font-style:italic}
+.ct-sep{width:calc(var(--th) * .16);height:calc(var(--th) * .16);background:#121110;transform:rotate(45deg);flex:none;opacity:.9}
+.ct-go{pointer-events:auto;flex:none;font-family:var(--sans);font-weight:800;font-size:calc(var(--th) * .2);letter-spacing:.14em;text-transform:uppercase;color:#ffd320;text-decoration:none;padding:calc(var(--th) * .16) calc(var(--th) * .34);border-radius:999px;background:linear-gradient(180deg,#2a2722,#0e0d0b);box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 14px -4px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.6);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.ct-go::before{content:"";position:absolute;top:0;bottom:0;left:-50%;width:35%;background:linear-gradient(100deg,rgba(255,211,32,0),rgba(255,231,120,.55),rgba(255,211,32,0));transform:skewX(-20deg);animation:mgShine 3s 1s ease-in-out infinite}
+.ct-go:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 10px 20px -4px rgba(0,0,0,.8),0 0 0 1px rgba(0,0,0,.6)}
+.ct-x{display:inline}
+.ct.idle .ct-go{pointer-events:none}
+/* the roll that carries the tape */
+.ct-roll{position:absolute;top:50%;left:0;width:calc(var(--th) * 1.15);height:calc(var(--th) * 1.32);margin-top:calc(var(--th) * -.66);transform:translateX(calc(var(--rx,0px) - 50%)) scale(var(--rs,1));border-radius:42% / 50%;opacity:var(--ro,0);
+  background:
+   radial-gradient(closest-side,#5a4a1e 0 18%,#2b2416 19% 24%,rgba(0,0,0,0) 25%),
+   repeating-radial-gradient(closest-side,rgba(0,0,0,.18) 0 1px,rgba(0,0,0,0) 1px 4px),
+   linear-gradient(90deg,#a87d00 0,#f6c700 18%,#fff08a 38%,#ffd21a 52%,#d9a400 78%,#7c5c00 100%);
+  box-shadow:inset -6px 0 10px rgba(0,0,0,.35),inset 4px 0 8px rgba(255,255,255,.35),0 14px 18px -6px rgba(0,0,0,.55);pointer-events:none}
+@media(max-width:760px){.ct{top:53%;--th:58px;left:-6%;right:-6%;transform:translateY(-50%) rotate(-3.5deg)}.ct-tape{gap:12px;justify-content:center;padding:0 9%}.ct-tx{font-size:12.5px;letter-spacing:.1em;white-space:normal;line-height:1.15;text-align:left}.ct-hide{display:none}.ct-go{font-size:10.5px;padding:9px 13px}}
+@media(prefers-reduced-motion:reduce){.ct-tape::after,.ct-go::before{animation:none}}
 /* Tablets (portrait and landscape) */
 @media(min-width:761px) and (max-width:1280px){
 .gala .ggrid{padding-left:60px;padding-right:60px}
@@ -1476,6 +1521,7 @@ section{padding:68px 0}
     <p class="tag" data-c="hero.subtitle" style="visibility:hidden" aria-hidden="true"></p>
     <div class="actions"><a class="btn btn-gold" href="#seminarians" data-t="meet"></a><a class="btn btn-glass" href="#about" data-t="discover"></a></div>
   </div>
+  <div class="ct idle" id="ctape" aria-label="The Chapel is Rising"><div class="ct-in"><div class="ct-tape"></div><div class="ct-roll"></div></div></div>
   <a class="today" href="#liturgy" id="todayChip"><span class="dot"></span><div><small data-t="todayK"></small><br><span></span></div></a>
   <div class="cue" data-t="scroll"></div>
 </section>
@@ -2157,10 +2203,10 @@ function render() {
   ["#nameImg", "#wordmark", "#fName"].forEach(s => $(s).src = RMS_IMG.seminary_name);
   $("#fabImg").src = $("#aiImg").src = MEMOJI();
   const nv = t("nav");
-  const TOP = [["#about", nv.about], ["#seminarians", nv.seminarians], ["#gala", t("galaEy")], ["#rising", t("rsNav")], ["#contact", nv.contact]];
-  $("#menu").innerHTML = TOP.map(([h, l]) => `<li><a href="${h}">${esc(l)}</a></li>`).join("");
+  const TOP = [["#about", nv.about], ["#seminarians", nv.seminarians], ["#gala", t("galaEy")], ["#contact", nv.contact]];
+  $("#menu").innerHTML = TOP.map(([h, l]) => `<li><a href="${h}">${esc(l)}</a></li>`).join("") + `<li class="mch"><a class="mgold" href="chapel-rising.html">${esc(CHAPL[lang] || CHAPL.en)}</a><span class="marr" aria-hidden="true"><svg viewBox="0 0 18 22"><defs><linearGradient id="mgR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6a5a"/><stop offset=".5" stop-color="#e01b24"/><stop offset="1" stop-color="#9c0d14"/></linearGradient></defs><path d="M9 0 L18 10 H12.2 V22 H5.8 V10 H0 Z" fill="url(#mgR)" stroke="#7a0a10" stroke-width=".8" stroke-linejoin="round"/><path d="M9 2.2 L14.6 8.6 H11 V20.6 H9.6 V8.6 Z" fill="rgba(255,255,255,.35)"/></svg></span></li>`; ctLang();
   const ALL = [["#about", nv.about], ["#history", t("historyEy")], ["#formation", nv.formation], ["#seminarians", nv.seminarians], ["#priests", nv.priests], ["#rising", t("rsNav")], ["#news", nv.news], ["#gala", t("galaEy")], ["#journal", t("journalNav")], ["#media", t("mediaEy")], ["#give", nv.give], ["#sponsor", t("spEy")], ["#liturgy", nv.liturgy], ["#contact", nv.contact]];
-  const EXT = [["chapel-rising.html", t("rsNav") + " ↗"], ["cardo.html", "Cardo · " + ({ en: "Staff", es: "Personal", pt: "Equipe", it: "Staff" }[lang] || "Staff")]];
+  const EXT = [["chapel-rising.html", (CHAPL[lang] || CHAPL.en) + " ↗"], ["cardo.html", "Cardo · " + ({ en: "Staff", es: "Personal", pt: "Equipe", it: "Staff" }[lang] || "Staff")]];
   $("#sideNav").innerHTML = ALL.map(([h, l], i) => `<a href="${h}" style="transition-delay:${.05 + i * .03}s"><small>${String(i + 1).padStart(2, "0")}</small>${esc(l)}</a>`).join("") + `<span class="sdiv"></span>` + EXT.map(([h, l], i) => `<a href="${h}" class="sext" style="transition-delay:${.05 + (ALL.length + i) * .03}s"><small>${i ? "✠" : "↗"}</small>${esc(l)}</a>`).join("");
   $("#sideSeal").src = RMS_IMG.logo_rm;
   $("#sideAddr").innerHTML = `${esc(C.site.address1)}, ${esc(C.site.address2)}<br>${esc(C.site.phone)} · ${esc(C.site.email)}`;
@@ -3300,6 +3346,22 @@ $("#sideBtn").onclick = () => sideOpen(true); $("#sideX").onclick = $("#dshade")
 $("#sideNav").addEventListener("click", e => { if (e.target.closest("a")) sideOpen(false); });
 $$("#langs2 button").forEach(b => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem("rms_lang", lang); } catch (e) { } $("#aiBody").innerHTML = ""; render(); });
 window.addEventListener("storage", e => { if (e.key === STORE) { try { C = JSON.parse(e.newValue) || RMS_DEFAULT; render(); } catch (x) { } } });
+/* "Chapel Construction" label in the four languages */
+const CHAPL = { en: "Chapel Construction", es: "Construcción de la Capilla", pt: "Construção da Capela", it: "Costruzione della Cappella" };
+/* Caution tape on the hero: unrolls, stays 10 s, rolls back, waits 8 s, again */
+const CTI = { en: ["The Chapel is Rising", "come and see!", "Visit the campaign"], es: ["The Chapel is Rising", "¡vengan a ver!", "Visitar la campaña"], pt: ["The Chapel is Rising", "venham ver!", "Visitar a campanha"], it: ["The Chapel is Rising", "venite a vedere!", "Visita la campagna"] };
+function ctLang() { const T = $("#ctape .ct-tape"); if (!T) return; const L = CTI[lang] || CTI.en, seg = `<span class="ct-tx">${esc(L[0])} — <em>${esc(L[1])}</em></span>`;
+  T.innerHTML = `<span class="ct-hide">${seg}</span><span class="ct-sep ct-hide"></span>${seg}<a class="ct-go" href="chapel-rising.html">${esc(L[2])} →</a><span class="ct-sep ct-hide"></span><span class="ct-hide">${seg}</span>`; }
+(function ctRun() {
+  const el = $("#ctape"); if (!el) return; const T = el.querySelector(".ct-tape"), Rl = el.querySelector(".ct-roll"), red = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  const ease = q => q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2;
+  const set = p => { const w = el.offsetWidth; T.style.setProperty("--cp", ((1 - p) * 100).toFixed(2) + "%"); Rl.style.setProperty("--rx", (p * w).toFixed(1) + "px");
+    Rl.style.setProperty("--rs", (1 - p * .38).toFixed(3)); Rl.style.setProperty("--ro", p > 0 && p < 1 ? "1" : "0"); };
+  const run = (from, to, ms, done) => { const t0 = performance.now(); const f = now => { const q = Math.min(1, (now - t0) / ms); set(from + (to - from) * ease(q)); if (q < 1) requestAnimationFrame(f); else done && done(); }; requestAnimationFrame(f); };
+  if (red) { set(1); el.classList.remove("idle"); return; }
+  const cycle = () => { el.classList.remove("idle"); run(0, 1, 2200, () => setTimeout(() => { el.classList.add("idle"); run(1, 0, 1700, () => setTimeout(cycle, 8000)); }, 10000)); };
+  set(0); setTimeout(cycle, 2600);
+})();
 render();
 </script>
 <div class="zf" id="zf" role="dialog" aria-modal="true" aria-labelledby="zfTitle" hidden>
