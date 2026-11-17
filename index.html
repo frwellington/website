@@ -3074,20 +3074,22 @@ function reelScroll(st, tr) {
   requestAnimationFrame(step);
 }
 /* Card for each formator (hover on computers, tap on phones and tablets) */
-let fmI = -1, fmEl = null;
+let fmI = -1, fmEl = null, fmUp = false;
 function fmShow(i, el) {
   const f = (C.faculty || [])[i]; if (!f) return; const pc = $("#pCard"); fmI = i; pcI = -1;
   const rows = [[t("prCtry"), tr(f.from)], [t("fmDio"), tr(f.diocese)]].filter(x => x[1]);
   pc.innerHTML = `<div class="pch">${flagsH(f)}<div><b>${esc(ttl(f.name))}</b>${tr(f.role) ? `<em>${esc(tr(f.role))}</em>` : ""}</div></div>` + rows.map(([k, v]) => `<div class="pcr"><small>${esc(k)}</small><span>${esc(v)}</span></div>`).join("");
-  pc.classList.add("on"); fmEl = el; fmPlace();
+  pc.classList.add("on"); fmEl = el; fmPlace(true);
   $$("#formators .fm.hl").forEach(q => q.classList.remove("hl")); el.classList.add("hl");
 }
-function fmPlace() {
+function fmPlace(go) {
   const pc = $("#pCard"), el = fmEl; if (!el) return; const im = el.querySelector(".iconframe") || el, r = im.getBoundingClientRect(), w = pc.offsetWidth, hh = pc.offsetHeight;
   if (r.bottom < 0 || r.top > innerHeight) return fmHide();
-  /* starts below the face, so the photo stays visible */
-  const x = Math.max(10, Math.min(innerWidth - w - 10, r.left + r.width / 2 - w / 2)), y = r.top + r.height * .64;
-  pc.style.left = x + "px"; pc.style.top = Math.max(10, Math.min(innerHeight - hh - 10, y)) + "px";
+  /* opens right under the photo, so the picture stays fully visible */
+  const x = Math.max(10, Math.min(innerWidth - w - 10, r.left + r.width / 2 - w / 2)), below = r.bottom + 8, above = r.top - hh - 8;
+  if (go) fmUp = !(below + hh <= innerHeight - 10 || above < 10); const y = fmUp ? above : below;
+  pc.style.left = x + "px"; pc.style.top = y + "px";
+  if (go && y === below && below + hh > innerHeight - 10) scrollBy({ top: below + hh - innerHeight + 20, behavior: "smooth" });
 }
 function fmHide() { if (fmI < 0) return; fmI = -1; fmEl = null; $("#pCard").classList.remove("on"); $$("#formators .fm.hl").forEach(q => q.classList.remove("hl")); }
 document.addEventListener("pointerover", e => { const m = e.target.closest && e.target.closest("#formators .fm"); if (m && e.pointerType !== "touch" && fmI !== +m.dataset.f) fmShow(+m.dataset.f, m); });
