@@ -1398,12 +1398,12 @@ body.zf-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){.drp-b,.drp-rim{animation:none}.drp.on .drp-in{animation:none;opacity:1;transform:none}}
 /* ===== Top menu: golden "Chapel Construction" button with animated red arrow ===== */
 .menu li.mch{position:relative;display:flex;align-items:center;margin-left:6px}
-.menu a.mgold{position:relative;overflow:hidden;isolation:isolate;font-family:var(--sans);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#1a1305;padding:11px 20px;border-radius:999px;background:linear-gradient(180deg,#fff3c4 0%,#f3d27a 22%,#d9a93f 55%,#b9832a 78%,#e6bf63 100%);box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 -2px 4px rgba(120,80,10,.35) inset,0 0 0 1px rgba(120,84,18,.55),0 8px 20px -6px rgba(201,154,59,.75),0 0 22px rgba(246,214,130,.35);text-shadow:0 1px 0 rgba(255,246,214,.7);animation:mgGlow 1.1s ease-in-out infinite}
+.menu a.mgold{position:relative;overflow:hidden;isolation:isolate;font-family:var(--sans);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#1a1305;padding:11px 20px;border-radius:999px;background:linear-gradient(180deg,#fff3c4 0%,#f3d27a 22%,#d9a93f 55%,#b9832a 78%,#e6bf63 100%);box-shadow:0 1px 0 rgba(255,255,255,.75) inset,0 -2px 4px rgba(120,80,10,.35) inset,0 0 0 1px rgba(120,84,18,.55),0 8px 20px -6px rgba(201,154,59,.75),0 0 22px rgba(246,214,130,.35);text-shadow:0 1px 0 rgba(255,246,214,.7);animation:mgGlow 2.4s cubic-bezier(.45,0,.55,1) infinite}
 .menu a.mgold::before{content:"";position:absolute;top:-30%;bottom:-30%;left:-60%;width:38%;z-index:-1;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(255,255,255,.95) 50%,rgba(255,255,255,0));transform:skewX(-22deg);animation:mgShine 3.2s ease-in-out infinite}
 .menu a.mgold:hover{color:#000;transform:translateY(-1px);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 -2px 4px rgba(120,80,10,.35) inset,0 0 0 1px rgba(120,84,18,.6),0 12px 26px -6px rgba(201,154,59,.9),0 0 30px rgba(246,214,130,.55)}
 .menu a.mgold:focus-visible{outline:2px solid #fff;outline-offset:3px}
 @keyframes mgShine{0%,55%{left:-60%}85%,100%{left:130%}}
-@keyframes mgGlow{0%,100%{opacity:1;filter:brightness(1.12) drop-shadow(0 0 10px rgba(255,214,110,.85))}50%{opacity:.45;filter:brightness(.92) drop-shadow(0 0 0 rgba(255,214,110,0))}}
+@keyframes mgGlow{0%,100%{opacity:.86;filter:brightness(.96) drop-shadow(0 0 0 rgba(255,214,110,0))}50%{opacity:1;filter:brightness(1.16) drop-shadow(0 0 9px rgba(255,220,130,.9)) drop-shadow(0 0 22px rgba(246,206,110,.45))}}
 .marr{position:absolute;left:50%;top:100%;margin:5px 0 0 -10px;width:20px;height:25px;pointer-events:none;animation:mgArr 1.15s cubic-bezier(.45,0,.55,1) infinite;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
 .marr svg{width:100%;height:100%;display:block}
 @keyframes mgArr{0%,100%{transform:translateY(6px)}50%{transform:translateY(0)}}
@@ -1428,10 +1428,16 @@ body.zf-open{overflow:hidden}
 .ct-tx em{font-style:normal;font-weight:800;letter-spacing:.06em;text-transform:none;font-family:var(--serif);font-size:1.22em;font-style:italic}
 .ct-sep{width:calc(var(--th) * .16);height:calc(var(--th) * .16);background:#121110;transform:rotate(45deg);flex:none;opacity:.9}
 .ct-go{pointer-events:auto;flex:none;font-family:var(--sans);font-weight:800;font-size:calc(var(--th) * .2);letter-spacing:.14em;text-transform:uppercase;color:#ffd320;text-decoration:none;padding:calc(var(--th) * .16) calc(var(--th) * .34);border-radius:999px;background:linear-gradient(180deg,#2a2722,#0e0d0b);box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 14px -4px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.6);transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden}
-.ct-go::before{content:"";position:absolute;top:0;bottom:0;left:-50%;width:35%;background:linear-gradient(100deg,rgba(255,211,32,0),rgba(255,231,120,.55),rgba(255,211,32,0));transform:skewX(-20deg);animation:mgShine 3s 1s ease-in-out infinite}
+.ct-go::before{content:"";position:absolute;top:0;bottom:0;left:-50%;width:35%;background:linear-gradient(100deg,rgba(255,211,32,0),rgba(255,231,120,.55),rgba(255,211,32,0));transform:skewX(-20deg);animation:mgShine 1.8s .4s ease-in-out infinite}
 .ct-go:hover{transform:translateY(-1px) scale(1.03);box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 10px 20px -4px rgba(0,0,0,.8),0 0 0 1px rgba(0,0,0,.6)}
 .ct-x{display:inline}
 .ct.idle .ct-go{pointer-events:none}
+.ct-go{animation:ctPulse 1.4s ease-in-out infinite;text-shadow:0 0 8px rgba(255,211,32,.75)}
+.ct-ar{display:inline-block;margin-left:.35em;animation:ctAr 1.4s ease-in-out infinite}
+@keyframes ctPulse{0%,100%{transform:scale(1);filter:brightness(1);box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 14px -4px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.6),0 0 0 0 rgba(255,211,32,.85),0 0 10px rgba(255,211,32,.35)}50%{transform:scale(1.07);filter:brightness(1.25);box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 6px 14px -4px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.6),0 0 0 7px rgba(255,255,255,0),0 0 24px rgba(255,255,255,.75)}}
+@keyframes ctRing{0%{box-shadow:0 0 0 0 rgba(255,211,32,.8),0 0 14px rgba(255,211,32,.55)}70%{box-shadow:0 0 0 12px rgba(255,211,32,0),0 0 22px rgba(255,211,32,.25)}100%{box-shadow:0 0 0 0 rgba(255,211,32,0),0 0 14px rgba(255,211,32,.5)}}
+@keyframes ctAr{0%,100%{transform:translateX(0)}50%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){.ct-go,.ct-ar{animation:none}}
 /* the roll that carries the tape */
 .ct-roll{position:absolute;top:50%;left:0;width:calc(var(--th) * 1.15);height:calc(var(--th) * 1.32);margin-top:calc(var(--th) * -.66);transform:translateX(calc(var(--rx,0px) - 50%)) scale(var(--rs,1));border-radius:42% / 50%;opacity:var(--ro,0);
   background:
@@ -3351,7 +3357,7 @@ const CHAPL = { en: "Chapel Construction", es: "Construcción de la Capilla", pt
 /* Caution tape on the hero: unrolls, stays 10 s, rolls back, waits 8 s, again */
 const CTI = { en: ["The Chapel is Rising", "come and see!", "Visit the campaign"], es: ["The Chapel is Rising", "¡vengan a ver!", "Visitar la campaña"], pt: ["The Chapel is Rising", "venham ver!", "Visitar a campanha"], it: ["The Chapel is Rising", "venite a vedere!", "Visita la campagna"] };
 function ctLang() { const T = $("#ctape .ct-tape"); if (!T) return; const L = CTI[lang] || CTI.en, seg = `<span class="ct-tx">${esc(L[0])} — <em>${esc(L[1])}</em></span>`;
-  T.innerHTML = `<span class="ct-hide">${seg}</span><span class="ct-sep ct-hide"></span>${seg}<a class="ct-go" href="chapel-rising.html">${esc(L[2])} →</a><span class="ct-sep ct-hide"></span><span class="ct-hide">${seg}</span>`; }
+  T.innerHTML = `<span class="ct-hide">${seg}</span><span class="ct-sep ct-hide"></span>${seg}<a class="ct-go" href="chapel-rising.html">${esc(L[2])}<span class="ct-ar">→</span></a><span class="ct-sep ct-hide"></span><span class="ct-hide">${seg}</span>`; }
 (function ctRun() {
   const el = $("#ctape"); if (!el) return; const T = el.querySelector(".ct-tape"), Rl = el.querySelector(".ct-roll"), red = matchMedia("(prefers-reduced-motion:reduce)").matches;
   const ease = q => q < .5 ? 4 * q * q * q : 1 - Math.pow(-2 * q + 2, 3) / 2;
