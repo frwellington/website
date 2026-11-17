@@ -1,0 +1,14 @@
+Card (the classic card) — 1200x1200
+Create an image of exactly 1200 × 1200 pixels (square, 1:1). The image will be shown in a card with rounded corners; keep important elements away from the corners. Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic.
+
+Ornament (Christmas ball) — 1200x1200
+Create an image of exactly 1200 × 1200 pixels (square, 1:1). The image will be shown inside a round Christmas ornament: only the central circle (diameter 1200 px) is visible, and a golden cap covers the top centre. Keep the subject inside the circle and away from the top edge. Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic.
+
+Circle — 1200x1200
+Create an image of exactly 1200 × 1200 pixels (square, 1:1). The image will be cut into a circle of 1200 px diameter: anything outside the circle is hidden. Keep the subject in the centre. Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic.
+
+Square — 1200x1200
+Create an image of exactly 1200 × 1200 pixels (square, 1:1). The image is shown as a square with slightly rounded corners. Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic.
+
+Rectangle — 1600x1200
+Create an image of exactly 1600 × 1200 pixels (landscape, 4:3). The image is shown as a 4:3 rectangle with rounded corners. Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic.
