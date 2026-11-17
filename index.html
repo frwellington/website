@@ -3085,8 +3085,8 @@ function fmShow(i, el) {
 function fmPlace() {
   const pc = $("#pCard"), el = fmEl; if (!el) return; const im = el.querySelector(".iconframe") || el, r = im.getBoundingClientRect(), w = pc.offsetWidth, hh = pc.offsetHeight;
   if (r.bottom < 0 || r.top > innerHeight) return fmHide();
-  /* over the lower part of the formator's own photo, so no face is covered */
-  const x = Math.max(10, Math.min(innerWidth - w - 10, r.left + r.width / 2 - w / 2)), y = r.bottom - hh - Math.min(18, r.height * .06);
+  /* starts below the face, so the photo stays visible */
+  const x = Math.max(10, Math.min(innerWidth - w - 10, r.left + r.width / 2 - w / 2)), y = r.top + r.height * .64;
   pc.style.left = x + "px"; pc.style.top = Math.max(10, Math.min(innerHeight - hh - 10, y)) + "px";
 }
 function fmHide() { if (fmI < 0) return; fmI = -1; fmEl = null; $("#pCard").classList.remove("on"); $$("#formators .fm.hl").forEach(q => q.classList.remove("hl")); }
