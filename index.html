@@ -1581,10 +1581,6 @@ section{padding:68px 0}
   <div class="pout reveal" id="pOut"><div class="ptag"><i></i><span data-t="prWorld"></span></div><div class="poutin" id="pOutIn"></div></div>
 </div></section>
 
-<section class="rising" id="rising"><a class="rsbox" href="chapel-rising.html">
-  <div class="rsimg"><img src="assets/rising-steel.webp" alt="" loading="lazy"></div><i class="rsrays"></i><i class="rsdust"></i>
-  <div class="rsin"><span class="kicker" data-t="rsEy"></span><h2 data-h="rsH"></h2><p data-t="rsP"></p><span class="btn btn-gold rsbtn"><span data-t="rsBtn"></span> →</span></div>
-</a></section>
 
 <section class="parch grain" id="news"><div class="wrap">
   <div class="two rev" style="margin-bottom:70px"><div class="head reveal" style="margin:0"><span class="kicker" data-t="evEy"></span><h2 data-h="evH"></h2></div><div class="art3d r reveal d2" style="max-width:420px"><img data-art="art_tomb" alt=""></div></div>
@@ -2214,7 +2210,7 @@ function render() {
   const nv = t("nav");
   const TOP = [["#about", nv.about], ["#seminarians", nv.seminarians], ["#gala", t("galaEy")], ["#contact", nv.contact]];
   $("#menu").innerHTML = TOP.map(([h, l]) => `<li><a href="${h}">${esc(l)}</a></li>`).join("") + `<li class="mch"><a class="mgold" href="chapel-rising.html">${esc(CHAPL[lang] || CHAPL.en)}</a></li>`; ctLang();
-  const ALL = [["#about", nv.about], ["#history", t("historyEy")], ["#formation", nv.formation], ["#seminarians", nv.seminarians], ["#priests", nv.priests], ["#rising", t("rsNav")], ["#news", nv.news], ["#gala", t("galaEy")], ["#journal", t("journalNav")], ["#media", t("mediaEy")], ["#give", nv.give], ["#sponsor", t("spEy")], ["#liturgy", nv.liturgy], ["#contact", nv.contact]];
+  const ALL = [["#about", nv.about], ["#history", t("historyEy")], ["#formation", nv.formation], ["#seminarians", nv.seminarians], ["#priests", nv.priests], ["#news", nv.news], ["#gala", t("galaEy")], ["#journal", t("journalNav")], ["#media", t("mediaEy")], ["#give", nv.give], ["#sponsor", t("spEy")], ["#liturgy", nv.liturgy], ["#contact", nv.contact]];
   const EXT = [["chapel-rising.html", (CHAPL[lang] || CHAPL.en) + " ↗"], ["cardo.html", "Cardo · " + ({ en: "Staff", es: "Personal", pt: "Equipe", it: "Staff" }[lang] || "Staff")]];
   $("#sideNav").innerHTML = ALL.map(([h, l], i) => `<a href="${h}" style="transition-delay:${.05 + i * .03}s"><small>${String(i + 1).padStart(2, "0")}</small>${esc(l)}</a>`).join("") + `<span class="sdiv"></span>` + EXT.map(([h, l], i) => `<a href="${h}" class="sext" style="transition-delay:${.05 + (ALL.length + i) * .03}s"><small>${i ? "✠" : "↗"}</small>${esc(l)}</a>`).join("");
   $("#sideSeal").src = RMS_IMG.logo_rm;
@@ -2857,7 +2853,7 @@ function aiFit(m) { [".aipr span", ".aipr small", ".aitown>b>i", ".aitown>b smal
   if (f < 1) { const fs = parseFloat(getComputedStyle(E[0]).fontSize); E.forEach(e => e.style.fontSize = (fs * f * .97).toFixed(2) + "px"); } }); }
 function aiAdd(html, who, go) {
   const m = document.createElement("div"); m.className = "msg " + who; m.innerHTML = html;
-  if (go) { const a = document.createElement("span"); a.className = "go"; a.textContent = go.label || t("aiGo"); a.onclick = go.fn || (() => { $("#ai").classList.remove("open"); document.getElementById(go.id)?.scrollIntoView({ behavior: "smooth" }); }); m.appendChild(document.createElement("br")); m.appendChild(a); }
+  if (go) { const a = document.createElement("span"); a.className = "go"; a.textContent = go.label || t("aiGo"); a.onclick = go.fn || (go.id === "rising" ? () => { location.href = "chapel-rising.html"; } : () => { $("#ai").classList.remove("open"); document.getElementById(go.id)?.scrollIntoView({ behavior: "smooth" }); }); m.appendChild(document.createElement("br")); m.appendChild(a); }
   if (who === "bot") requestAnimationFrame(() => aiFit(m));
   if (who === "bot") { const r = document.createElement("div"); r.className = "row-bot"; r.innerHTML = `<span class="mini"><img src="${MEMOJI()}" alt=""></span>`; r.appendChild(m); $("#aiBody").appendChild(r); } else $("#aiBody").appendChild(m);
   $("#aiBody").scrollTop = 1e6;
