@@ -664,6 +664,8 @@ if ((C.contentV || 0) < 11) { C.contentV = 11; const ST = { concert: { en: "Watc
   (C.events || []).forEach(e => { if (e.logo && ST[e.type]) e.text = Object.assign({}, ST[e.type]); }); }
 (C.stats || []).forEach(x => { const e = x.label && x.label.en; if (e === "Priests formed") x.label = { en: "Priests ordained", es: "Sacerdotes ordenados", pt: "Sacerdotes ordenados", it: "Sacerdoti ordinati" }; if (e === "Parishes served" || e === "Itinerants") { x.value = "6"; x.label = { en: "In itinerancy", es: "En itinerancia", pt: "Em itinerância", it: "In itineranza" }; } });
 (function () { const D = {}; (RMS_DEFAULT.seminarians || []).forEach(s => D[s.name] = s); (C.seminarians || []).forEach(s => { const d = D[s.name]; if (d && d.story && s.story && typeof s.story === "object" && s.story.en === d.story.en) ["es", "pt", "it"].forEach(L => { if (!s.story[L] && d.story[L]) s.story[L] = d.story[L]; }); }); })();
+/* Events & News: carousel speed, hover sounds, shapes (added Nov 2026) */
+if (C.evSpeed == null) C.evSpeed = "5"; if (C.evSound == null) C.evSound = "Wind chimes (built-in)"; if (!Array.isArray(C.evSounds)) C.evSounds = [];
 /* Campaign bubble settings (added Nov 2026) */
 if (!C.drop || typeof C.drop !== "object") C.drop = { show: "yes", photo: "", title: {}, visit: {}, ok: {}, delay: "4" };
 /* Formators: flag, place of birth and diocese (added Nov 2026) */
@@ -719,6 +721,7 @@ function fieldHTML(f, val, id) {
     const v = val || {};
     return `<div class="fld">${lab}<div class="ml ${f.type === "mlarea" ? "area" : ""}">${LANGS.map(l => `<div>${f.type === "mlarea" ? `<textarea data-id="${id}" data-l="${l}" placeholder="${l.toUpperCase()}" rows="${f.rows || 4}">${esc(v[l])}</textarea>` : `<input data-id="${id}" data-l="${l}" value="${esc(v[l])}">`}<span>${l.toUpperCase()}</span></div>`).join("")}</div></div>`;
   }
+  if (f.type === "crop") { const v = val && typeof val === "object" ? val : { z: 1, x: 50, y: 50 }; return `<div class="fld">${lab}<input type="hidden" data-id="${id}" value="${esc(JSON.stringify(v))}"><div style="display:flex;gap:10px;align-items:center"><button class="btn s" type="button" data-crop="${id}">Crop / zoom photo</button><button class="btn s" type="button" data-cropreset="${id}">Reset</button><small class="cropinfo" style="color:var(--mute)">${v.z > 1 || v.x != 50 || v.y != 50 ? "Zoom " + (+v.z).toFixed(2) + "× · centre " + Math.round(v.x) + "% / " + Math.round(v.y) + "%" : "Whole photo, centred"}</small></div></div>`; }
   if (f.type === "area") return `<div class="fld">${lab}<textarea data-id="${id}">${esc(val)}</textarea></div>`;
   if (f.type === "select") return `<div class="fld">${lab}<select data-id="${id}">${f.options.map(o => `<option ${o == val ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></div>`;
   if (f.type === "check") return `<div class="fld"><label><input type="checkbox" data-id="${id}" ${val ? "checked" : ""} style="width:auto;margin-right:8px">${esc(f.label)}</label></div>`;
@@ -732,6 +735,7 @@ function readField(f, root, id) {
   if (f.type === "image" && el.dataset.raw && el.value === "[uploaded photo]") return el.dataset.raw;
   if (f.type === "yt") { const m = el.value.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([\w-]{11})/); return m ? m[1] : el.value.trim(); }
   if (f.type === "check") return el.checked;
+  if (f.type === "crop") { try { return JSON.parse(el.value); } catch (x) { return { z: 1, x: 50, y: 50 }; } }
   if (f.type === "number") return el.value === "" ? "" : +el.value;
   if (f.type === "list") return el.value.split("\n").map(s => s.trim()).filter(Boolean);
   return el.value;
@@ -762,7 +766,7 @@ const S = {
   formation: { title: "Formation stages", list: "stages", sum: i => i.name.en, fields: [["key", "Internal key (used by seminarian profiles)", "text"], ["name", "Name", "ml"], ["text", "Description", "mlarea"]], extra: { obj: "", fields: [["formationIntro", "Introduction", "mlarea"], ["formationArt", "Background image", "image"]] } },
   seminarians: { title: "Seminarians", list: "seminarians", thumb: "photo", sum: i => i.name, cols: ["origin", "stage", "parish"], fields: [["name", "Full name", "text"], ["origin", "From", "text"], ["stage", "Stage", "select", () => C.stages.map(s => s.key)], ["parish", "Home parish", "text"], ["photo", "Photo (URL)", "image"], ["story", "Vocation story", "mlarea", 8]] },
   faculty: { title: "Formators", list: "faculty", thumb: "photo", sum: i => i.name, fields: [["name", "Name", "text"], ["role", "Role", "ml"], ["photo", "Photo", "image"], ["flags", "Flag — country of birth (code). Available: ES MX US BR IT DO HN PL PH NI CO PT", "text"], ["from", "Place of birth (shown when someone clicks the photo)", "ml"], ["diocese", "Diocese", "ml"]] },
-  events: { title: "Events & News", list: "events", thumb: i => i.photo || i.logoImg || (i.logo ? "img:" + i.logo : ""), extra: { obj: "", fields: [["evAuto", "Carousel moves by itself (yes) or stays still until a visitor clicks the arrows (no)", "select", () => ["yes", "no"]]] }, sum: i => i.title.en, cols: ["date", "type"], fields: [["type", "Type (write freely — e.g. Concert, Gala, Ordination, Retreat)", "text"], ["theme", "Card colours (auto = chosen from the Type)", "select", () => ["auto", "concert", "gala", "dinner", "default"]], ["date", "Date (as displayed)", "text"], ["logo", "Built-in logo (shown above the text)", "select", () => ["", "logo_xmas", "logo_gala", "logo_sad"]], ["photo", "Card photo — fills the whole card (square JPG, 1200 × 1200 px; keep the subject in the centre). Leave empty for a card without photo.", "image"], ["photoText", "Show the title and text on top of the photo? (no = only the photo, shown complete)", "select", () => ["no", "yes"]], ["logoImg", "Or upload a logo / picture for this card (PNG with transparent background looks best)", "image"], ["title", "Title", "ml"], ["text", "Text", "mlarea"]] },
+  events: { title: "Events & News", list: "events", sounds: 1, note: "The website shows the cards in the order of this list (1, 2, 3 …) — use the arrows to reorder them. Card photo sizes: 1200 × 1200 px for the shapes Card, Ornament, Circle and Square; 1600 × 1200 px for Rectangle. Download the ready-made templates below to give to an AI image generator.", thumb: i => i.photo || i.logoImg || (i.logo ? "img:" + i.logo : ""), extra: { obj: "", fields: [["evAuto", "Carousel? (yes = carousel, one card after the other · no = no carousel, all cards side by side in the order of this list)", "select", () => ["yes", "no"]], ["evSpeed", "Carousel speed — seconds from one card to the next", "select", () => ["5", "3"]], ["evSound", "Sound when a visitor's mouse passes over a card (each card can also choose its own)", "select", () => ["Wind chimes (built-in)", "none", ...(C.evSounds || []).map(s => s.n)]]] }, sum: i => i.title.en, cols: ["date", "type"], fields: [["type", "Type (write freely — e.g. Concert, Gala, Ordination, Retreat)", "text"], ["theme", "Card colours (auto = chosen from the Type)", "select", () => ["auto", "concert", "gala", "dinner", "default"]], ["shape", "Shape of the card", "select", () => ["card", "ornament", "circle", "square", "rectangle"]], ["date", "Date (as displayed)", "text"], ["logo", "Built-in logo (shown above the text)", "select", () => ["", "logo_xmas", "logo_gala", "logo_sad"]], ["photo", "Card photo — fills the whole card (1200 × 1200 px; Rectangle: 1600 × 1200 px). After uploading, press “Crop / zoom” to choose what is shown. Leave empty for a card without photo.", "image"], ["crop", "Photo framing", "crop"], ["photoText", "Show the title and text on top of the photo? (no = only the photo, shown complete)", "select", () => ["no", "yes"]], ["logoImg", "Or upload a logo / picture for this card (PNG with transparent background looks best)", "image"], ["title", "Title", "ml"], ["text", "Text", "mlarea"], ["link", "Link — when a visitor clicks the card it opens this address (leave empty for no link). E.g. https://… or chapel-rising.html or #gala", "text"], ["sound", "Sound when the mouse passes over this card", "select", () => ["section setting", "none", "Wind chimes (built-in)", ...(C.evSounds || []).map(s => s.n)]]] },
   gala: { title: "Gala Dinner", list: "gala.more", listTitle: "Additional album photos", sum: (i) => String(i).startsWith("data:") ? "Uploaded photo" : String(i).split("/").pop(), thumbSelf: true, fields: [["__", "Photo (upload or paste a link)", "image"]], scalar: true,
     note: "The tunnel-of-time album keeps all its current photos; the photos added here are shown after them. The ticket button can open the existing pop-up (“Tell me when tickets are available”) or go straight to a registration page.",
     extra: { obj: "gala", fields: [["title", "Title", "ml"], ["date", "Date", "text"], ["venue", "Venue", "text"], ["status", "Ticket status (button text)", "select", () => ["soon", "open", "soldout"]], ["mode", "What the ticket button does — auto: pop-up until tickets are open, then the link · popup: always the pop-up · link: always the registration page", "select", () => ["auto", "popup", "link"]], ["ticketLink", "Registration / tickets page (link)", "text"], ["text", "Description", "mlarea"]] } },
@@ -827,6 +831,7 @@ function renderSchema(v) {
     </tbody></table></div>`;
   }
   if (s.custom === "liturgy") h += liturgyPanel();
+  if (s.sounds) h += soundsPanel() + tplPanel();
   $("#view").innerHTML = h;
   if (s.obj !== undefined && !s.list) bindObj(s);
   if (s.extra) bindObj(s.extra); if (s.extra2) bindObj(s.extra2);
@@ -839,8 +844,87 @@ function renderSchema(v) {
     if (s.geo) $("#geoAll").onclick = geoAll;
   }
   if (s.custom === "liturgy") bindLiturgy();
+  if (s.sounds) bindSounds(v);
 }
 const thumbURL = u => u && u.startsWith("img:") ? (RMS_IMG[u.slice(4)] || "") : u && u.includes("wixstatic.com/media/") && !u.includes("/v1/") ? `${u}/v1/fill/w_160,h_200,al_c,q_70/t.jpg` : u;
+
+
+/* ===== Events & News: sound library, crop tool, shape templates ===== */
+const EV_CHIMES = "assets/chimes.mp3";
+let sndPlay = null;
+function playSnd(src) { try { if (sndPlay) sndPlay.pause(); sndPlay = new Audio(src); sndPlay.volume = .6; sndPlay.play().catch(() => toast("The browser blocked the sound — click the page once and try again")); } catch (x) { } }
+function soundsPanel() {
+  const L = C.evSounds || [];
+  return `<div class="panel"><h3>Hover sounds (MP3 library)</h3><p class="hint">Upload short MP3 files (1–4 seconds is best, maximum 400 KB each). Each sound then appears in the sound menus above and in every card. Browsers play sounds only after the visitor has clicked somewhere on the page once; phones and tablets do not play hover sounds.</p>
+  <table><thead><tr><th>Name</th><th>Size</th><th style="width:220px"></th></tr></thead><tbody>
+  <tr><td>Wind chimes (built-in)</td><td>16 KB</td><td><button class="btn s" type="button" data-sndplay="-1">▶ Play</button></td></tr>
+  ${L.map((s, i) => `<tr><td>${esc(s.n)}</td><td>${Math.round(s.d.length * .75 / 1024)} KB</td><td><button class="btn s" type="button" data-sndplay="${i}">▶ Play</button> <button class="btn s" type="button" data-sndren="${i}">Rename</button> <button class="btn s" type="button" data-snddel="${i}">Delete</button></td></tr>`).join("")}
+  </tbody></table><label class="btn" style="cursor:pointer;margin-top:12px;display:inline-block">+ Upload MP3<input type="file" accept="audio/mpeg,.mp3" id="sndUp" hidden></label></div>`;
+}
+function bindSounds(v) {
+  const L = C.evSounds = C.evSounds || [];
+  $$("[data-sndplay]").forEach(b => b.onclick = () => { const i = +b.dataset.sndplay; playSnd(i < 0 ? EV_CHIMES : L[i].d); });
+  $$("[data-snddel]").forEach(b => b.onclick = () => { const i = +b.dataset.snddel, n = L[i].n; if (!confirm("Delete the sound “" + n + "”?")) return; L.splice(i, 1); if (C.evSound === n) C.evSound = "Wind chimes (built-in)"; (C.events || []).forEach(e => { if (e.sound === n) e.sound = "section setting"; }); setDirty(true); go(v); });
+  $$("[data-sndren]").forEach(b => b.onclick = async () => { const i = +b.dataset.sndren, o = L[i].n; const r = await ask("Rename sound", "", [{ label: "Name", value: o }]); if (!r || !r[0].trim()) return; const n = r[0].trim(); if (n !== o && L.some(s => s.n === n)) return toast("A sound with this name already exists"); L[i].n = n; if (C.evSound === o) C.evSound = n; (C.events || []).forEach(e => { if (e.sound === o) e.sound = n; }); setDirty(true); go(v); });
+  const up = $("#sndUp"); if (up) up.onchange = () => { const f = up.files[0]; if (!f) return; if (!/\.mp3$/i.test(f.name) && f.type !== "audio/mpeg") return toast("Please choose an MP3 file"); if (f.size > 400 * 1024) return toast("This file is " + Math.round(f.size / 1024) + " KB — the maximum is 400 KB. Use a shorter sound."); const fr = new FileReader(); fr.onload = () => { const a = new Audio(); a.onloadedmetadata = () => { let n = f.name.replace(/\.mp3$/i, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").slice(0, 40).trim() || "Sound"; let b = n, k = 2; while (L.some(s => s.n === n) || n === "none" || n === "section setting" || n === "Wind chimes (built-in)") n = b + " " + k++; L.push({ n, d: fr.result }); setDirty(true); toast("Sound added: " + n + " (" + a.duration.toFixed(1) + " s)"); go(v); }; a.onerror = () => toast("This MP3 could not be read"); a.src = fr.result; }; fr.readAsDataURL(f); };
+}
+const EV_TPL = { card: [1200, 1200, "Card (the classic card)"], ornament: [1200, 1200, "Ornament (Christmas ball)"], circle: [1200, 1200, "Circle"], square: [1200, 1200, "Square"], rectangle: [1600, 1200, "Rectangle"] };
+function tplPrompt(k) { const [w, h] = EV_TPL[k]; const P = { card: "The image will be shown in a card with rounded corners; keep important elements away from the corners.", ornament: "The image will be shown inside a round Christmas ornament: only the central circle (diameter " + w + " px) is visible, and a golden cap covers the top centre. Keep the subject inside the circle and away from the top edge.", circle: "The image will be cut into a circle of " + w + " px diameter: anything outside the circle is hidden. Keep the subject in the centre.", square: "The image is shown as a square with slightly rounded corners.", rectangle: "The image is shown as a 4:3 rectangle with rounded corners." }; return "Create an image of exactly " + w + " × " + h + " pixels (" + (w === h ? "square, 1:1" : "landscape, 4:3") + "). " + P[k] + " Keep the main subject inside the dashed safe area of the attached template. Do not draw the template's lines, labels or grey areas in the final image. High resolution, sharp, realistic."; }
+function tplCanvas(k) {
+  const [w, h, name] = EV_TPL[k], c = document.createElement("canvas"); c.width = w; c.height = h; const x = c.getContext("2d");
+  const cx = w / 2, cy = h / 2, r = Math.min(w, h) / 2, round = k === "ornament" || k === "circle", rad = k === "card" ? 22 * w / 360 : k === "square" ? 10 * w / 360 : k === "rectangle" ? 14 * w / 480 : 0;
+  const shape = () => { x.beginPath(); if (round) x.arc(cx, cy, r, 0, Math.PI * 2); else x.roundRect(0, 0, w, h, rad); };
+  x.fillStyle = "#8d8d8d"; x.fillRect(0, 0, w, h); x.save(); shape(); x.clip();
+  const g = x.createLinearGradient(0, 0, w, h); g.addColorStop(0, "#f4f1ea"); g.addColorStop(1, "#e4ded1"); x.fillStyle = g; x.fillRect(0, 0, w, h);
+  x.strokeStyle = "rgba(0,0,0,.07)"; x.lineWidth = 2; for (let i = 100; i < w; i += 100) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, h); x.stroke(); } for (let i = 100; i < h; i += 100) { x.beginPath(); x.moveTo(0, i); x.lineTo(w, i); x.stroke(); }
+  x.restore();
+  x.lineWidth = 8; x.strokeStyle = "#1d3c78"; shape(); x.stroke();
+  x.setLineDash([26, 18]); x.lineWidth = 6; x.strokeStyle = "#c0392b"; x.beginPath(); if (round) x.arc(cx, cy, r * .78, 0, Math.PI * 2); else { const m = Math.min(w, h) * .1; x.roundRect(m, m, w - 2 * m, h - 2 * m, rad * .6); } x.stroke(); x.setLineDash([]);
+  x.strokeStyle = "rgba(29,60,120,.35)"; x.lineWidth = 3; x.beginPath(); x.moveTo(cx - 40, cy); x.lineTo(cx + 40, cy); x.moveTo(cx, cy - 40); x.lineTo(cx, cy + 40); x.stroke();
+  if (k === "ornament") { x.save(); x.translate(cx, 92); x.rotate(-11 * Math.PI / 180); x.fillStyle = "rgba(201,154,59,.85)"; x.beginPath(); x.roundRect(-r * .2, -100, r * .4, 120, 12); x.fill(); x.restore(); x.fillStyle = "#5e4413"; x.font = "600 30px Arial"; x.textAlign = "center"; x.fillText("golden cap covers this area", cx, 235); }
+  x.fillStyle = "#1d3c78"; x.textAlign = "center"; x.font = "700 " + Math.round(w * (round ? .036 : .04)) + "px Arial"; x.fillText(name, cx, cy - 120); x.fillText(w + " × " + h + " px", cx, cy - 60);
+  x.font = "500 " + Math.round(w * .026) + "px Arial"; x.fillStyle = "#c0392b"; x.fillText("Keep the subject inside the dashed red line", cx, cy + 90);
+  x.fillStyle = "#555"; x.fillText(round ? "Outside the blue circle is hidden" : "Blue line = edge of the card", cx, cy + 140);
+  return c;
+}
+function tplPanel() {
+  return `<div class="panel"><h3>Image templates for each shape</h3><p class="hint">Download the template of the shape you want and give it to an AI image generator (ChatGPT, Gemini, Midjourney …) together with the text next to it. Then upload the image in the card and use “Crop / zoom” if needed.</p>
+  <table><thead><tr><th>Shape</th><th>Size</th><th>Text to give the AI</th><th style="width:230px"></th></tr></thead><tbody>${Object.keys(EV_TPL).map(k => `<tr><td>${esc(EV_TPL[k][2])}</td><td style="white-space:nowrap">${EV_TPL[k][0]} × ${EV_TPL[k][1]}</td><td style="font-size:.86rem;color:var(--mute)">${esc(tplPrompt(k))}</td><td><button class="btn s" type="button" data-tpl="${k}">Download template</button> <button class="btn s" type="button" data-tplcopy="${k}">Copy text</button></td></tr>`).join("")}</tbody></table></div>`;
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest && e.target.closest("[data-tpl],[data-tplcopy],[data-crop],[data-cropreset]"); if (!t) return;
+  if (t.dataset.tpl) { const k = t.dataset.tpl; tplCanvas(k).toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "RMS-card-template-" + k + "-" + EV_TPL[k][0] + "x" + EV_TPL[k][1] + ".png"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }, "image/png"); return; }
+  if (t.dataset.tplcopy) { const s = tplPrompt(t.dataset.tplcopy); (navigator.clipboard ? navigator.clipboard.writeText(s) : Promise.reject()).then(() => toast("Text copied"), () => toast("Select the text in the table and copy it")); return; }
+  const id = t.dataset.crop || t.dataset.cropreset, inp = document.querySelector(`[data-id="${id}"]`); if (!inp) return;
+  const info = t.closest(".fld").querySelector(".cropinfo");
+  if (t.dataset.cropreset) { inp.value = JSON.stringify({ z: 1, x: 50, y: 50 }); info.textContent = "Whole photo, centred"; inp.dispatchEvent(new Event("input", { bubbles: true })); return; }
+  const ph = document.querySelector('[data-id="d.photo"]'), src = ph ? (ph.dataset.raw && ph.value === "[uploaded photo]" ? ph.dataset.raw : thumbURL(ph.value.trim())) : "";
+  if (!src) return toast("Upload a card photo first");
+  const shEl = document.querySelector('[data-id="d.shape"]'); cropOpen(src, shEl ? shEl.value : "card", JSON.parse(inp.value || "{}"), v => { inp.value = JSON.stringify(v); info.textContent = v.z > 1 || v.x != 50 || v.y != 50 ? "Zoom " + v.z.toFixed(2) + "× · centre " + Math.round(v.x) + "% / " + Math.round(v.y) + "%" : "Whole photo, centred"; inp.dispatchEvent(new Event("input", { bubbles: true })); });
+});
+function cropOpen(src, sh, v, done) {
+  let z = Math.min(4, Math.max(1, +v.z || 1)), px = v.x == null ? 50 : +v.x, py = v.y == null ? 50 : +v.y;
+  const W = Math.min(420, innerWidth - 80), H = sh === "rectangle" ? W * .75 : W, round = sh === "circle" || sh === "ornament", rad = round ? "50%" : sh === "card" ? "22px" : sh === "square" ? "10px" : "14px";
+  const m = document.createElement("div"); m.id = "cropM"; m.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(10,18,40,.72);display:flex;align-items:center;justify-content:center";
+  m.innerHTML = `<div style="background:#fff;border-radius:16px;padding:22px 24px;box-shadow:0 30px 80px rgba(0,0,0,.5);max-width:94vw;text-align:center"><h3 style="margin:0 0 4px">Crop / zoom photo</h3><p class="hint" style="margin:0 0 14px">Drag the photo to choose what is shown · use the slider (or the mouse wheel) to zoom.<br>Shape: <b>${esc(sh)}</b></p>
+  <div id="cropF" style="position:relative;width:${W}px;height:${H}px;margin:0 auto;border-radius:${rad};overflow:hidden;cursor:grab;touch-action:none;background:#222;box-shadow:0 0 0 3px #1d3c78,0 12px 30px rgba(0,0,0,.35)"><img id="cropI" src="${esc(src)}" draggable="false" style="width:100%;height:100%;object-fit:cover;display:block;user-select:none;pointer-events:none"></div>
+  <div style="display:flex;align-items:center;gap:12px;margin:16px auto 0;width:${W}px"><span>−</span><input id="cropZ" type="range" min="1" max="4" step="0.01" value="${z}" style="flex:1"><span>+</span></div>
+  <div style="display:flex;gap:10px;justify-content:center;margin-top:16px"><button class="btn s" type="button" id="cropR">Reset</button><button class="btn s" type="button" id="cropN">Cancel</button><button class="btn p" type="button" id="cropY">Apply</button></div></div>`;
+  document.body.appendChild(m);
+  const F = m.querySelector("#cropF"), I = m.querySelector("#cropI"), Z = m.querySelector("#cropZ");
+  const draw = () => { I.style.objectPosition = px + "% " + py + "%"; I.style.transform = "scale(" + z + ")"; I.style.transformOrigin = px + "% " + py + "%"; };
+  draw(); let d = null;
+  const ratio = () => { const nw = I.naturalWidth || 1, nh = I.naturalHeight || 1, s = Math.max(W / nw, H / nh); return [nw * s - W, nh * s - H]; };
+  F.onpointerdown = e => { d = { x: e.clientX, y: e.clientY, px, py }; F.setPointerCapture(e.pointerId); F.style.cursor = "grabbing"; };
+  F.onpointermove = e => { if (!d) return; const [ox, oy] = ratio(), sx = ox + W * (z - 1), sy = oy + H * (z - 1); if (sx > 0) px = Math.min(100, Math.max(0, d.px - (e.clientX - d.x) / sx * 100)); if (sy > 0) py = Math.min(100, Math.max(0, d.py - (e.clientY - d.y) / sy * 100)); draw(); };
+  F.onpointerup = F.onpointercancel = () => { d = null; F.style.cursor = "grab"; };
+  F.onwheel = e => { e.preventDefault(); z = Math.min(4, Math.max(1, z - e.deltaY * .0015)); Z.value = z; draw(); };
+  Z.oninput = () => { z = +Z.value; draw(); };
+  const close = () => m.remove();
+  m.querySelector("#cropR").onclick = () => { z = 1; px = 50; py = 50; Z.value = 1; draw(); };
+  m.querySelector("#cropN").onclick = close; m.onclick = e => { if (e.target === m) close(); };
+  m.querySelector("#cropY").onclick = () => { done({ z: Math.round(z * 100) / 100, x: Math.round(px * 10) / 10, y: Math.round(py * 10) / 10 }); close(); };
+}
 
 /* Drawer editor */
 let dctx = null;
@@ -1394,6 +1478,10 @@ const DIAC = [
   { k: "mission,missions,mission box,mission boxes,beyond massachusetts,on mission", a: "<b>Main website → Mission boxes</b> lists the “On mission beyond Massachusetts” boxes. Untick a box to hide it; <b>+ Add a mission box</b> adds a priest with a city outside Massachusetts, which creates the new box with all his information.", go: "missions" },
   { k: "film,the film,to the film,in the film,ordination film,ordination,new priest picture,new priests", a: "<b>Main website → Ordination film</b> adds new priests to the ordination film: photo, name and year. They appear in order by year, with their name.", go: "film" },
   { k: "event,events,news,concert,christmas", a: "<b>Main website → Events & News</b> adds, edits or deletes events and news, with dates, logos and links.", go: "events" },
+  { k: "carousel,speed,card order,cards order,no carousel", a: "<b>Main website → Events & News → Section text</b>: Carousel <b>yes</b> (choose 3 or 5 seconds per card) or <b>no</b> (all cards side by side, in the order of the list — use the ↑ ↓ arrows to reorder).", go: "events" },
+  { k: "shape,ornament,christmas ball,circle,square,rectangle,crop,zoom,template,templates", a: "Open a card in <b>Events & News</b> → <b>Shape of the card</b> (card, ornament, circle, square, rectangle). After uploading the photo press <b>Crop / zoom photo</b>. Ready-made image templates for AI are at the bottom of the Events & News page.", go: "events" },
+  { k: "sound,sounds,mp3,audio,chime,chimes,hover sound", a: "<b>Events & News → Hover sounds (MP3 library)</b>: upload MP3 files (max 400 KB), play, rename or delete them. Choose the sound for all cards in Section text, or for one card inside the card.", go: "events" },
+  { k: "card link,link card,clickable card", a: "Open the card in <b>Events & News</b> and fill in <b>Link</b>. Visitors who click the card are taken there. Leave it empty for no link.", go: "events" },
   { k: "gala,dinner,tickets,ticket,registration,register,gala button,gala pop-up,album,tunnel", a: "<b>Main website → Gala Dinner & album</b>: title, date, venue, ticket status and what the ticket button does — <b>popup</b> (the existing “tell me when tickets are available” pop-up), <b>link</b> (a registration page) or <b>auto</b>. Below, add more photos to the album.", go: "gala" },
   { k: "carousel,gala history,gala years,2010,past galas,history carousel", a: "<b>Main website → Gala history carousel</b> adds more years and photos to the Gala carousel (2010–2026 and beyond).", go: "galareel" },
   { k: "video,videos,multimedia,youtube", a: "<b>Main website → Multimedia</b> adds YouTube videos: paste the video's address, its title and duration.", go: "videos" },
